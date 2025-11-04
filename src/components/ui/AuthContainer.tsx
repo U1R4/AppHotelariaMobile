@@ -1,6 +1,6 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import React from "react";
-import { Text } from "react-native";
+import { Text, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 type Props = {
@@ -17,6 +17,8 @@ export default function AuthContainer({title, subtitle, icon, /*children*/}:Prop
             <FontAwesome5 name={icon} size={25} color="black"/>
             <Text>{title}</Text>
             <Text>{subtitle}</Text>
+            <TextInput 
+            placeholder="Digite seu Email"/>
         </SafeAreaView>
     );
 }
