@@ -1,4 +1,5 @@
 import AuthContainer from "@/components/ui/AuthContainer";
+import { TextInputComponent } from "react-native";
 
 export default function Login(){
     return <AuthContainer 
