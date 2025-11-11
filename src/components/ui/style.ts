@@ -11,7 +11,6 @@ export const global = StyleSheet.create({
     safeArea: {
         flex: 1,
         backgroundColor:"rgba(87, 87, 87, 1)",
-
     },
 
     KeyboardAvoiding:{
@@ -37,7 +36,8 @@ export const global = StyleSheet.create({
         elevation: 8,
         shadowColor: "#ffffffff",
         shadowRadius: 10,
-        shadowOpacity: 0.05
+        shadowOpacity: 0.05,
+        paddingBottom: width * 0.1,
     },
 
     title:{
@@ -49,8 +49,28 @@ export const global = StyleSheet.create({
         fontSize: 18,
         fontWeight: "400",
         marginTop: height * 0.04,
+        marginBottom: height * 0.01,
     },
 
+    inputBorder: {
+        elevation: 8,
+        shadowColor: "#000000ff",
+        shadowOpacity: 1,
+    },
+
+    inputBox: {
+        alignItems: "center",
+        display: "flex",
+        flexDirection: "row",
+        borderRadius: 10,
+        backgroundColor: "rgba(216, 216, 216, 1)",
+        paddingLeft: 10,
+        paddingRight: width * 0.4,
+    },
+
+    icon: {
+        marginRight: 10,
+    },
 
 
 

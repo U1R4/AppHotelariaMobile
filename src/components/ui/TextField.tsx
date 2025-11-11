@@ -1,5 +1,7 @@
 import { MaterialIcons } from "@expo/vector-icons";
+import React from "react";
 import { Text, TextInput, TextInputProps, View } from "react-native";
+import { global } from "./style";
 
 
 type Props = TextInputProps &{
@@ -12,15 +14,19 @@ export default function TextField({label, errortext, icon} : Props){
 
     return(
         <View>
-            <Text>{label}</Text>
+            <Text style={[global.subTitle]}>{label}</Text>
 
-            <View>
+            <View style={[global.inputBorder, global.inputBox]}>
                 {!! icon && (
                     <View>
-                        <MaterialIcons name={icon} size={18} color ="black"/>
+                        <MaterialIcons style={global.icon} name={icon} size={18} color ="black"/>
                     </View>
                 )}
-                <TextInput value="Teste"/>
+
+                <TextInput 
+                    value="" 
+                    placeholder={label}
+                />
             </View>
         </View>
     )

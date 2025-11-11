@@ -8,10 +8,10 @@ type Props = {
     title: string;
     subtitle?:string;
     icon?: keyof typeof FontAwesome6.glyphMap;
-    // children: React.ReactNode;
+    children: React.ReactNode;
 }
 
-export default function AuthContainer({title, subtitle, icon, /*children*/}:Props){
+export default function AuthContainer({title, subtitle, icon, children}:Props){
 
     return (
         <SafeAreaView style={global.safeArea}>
@@ -25,7 +25,7 @@ export default function AuthContainer({title, subtitle, icon, /*children*/}:Prop
                 </View>
 
                 <View style = {global.content}>
-                    
+                    {children}
                 </View>  
 
                 </ScrollView>
