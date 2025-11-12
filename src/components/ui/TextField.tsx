@@ -31,6 +31,7 @@ const TextField = ({label, errortext, icon} : Props) => {
                     placeholder={label}
                 />
             </View>
+            {!! errortext &&<Text style={global.errotext}>{errortext}</Text>}
         </View>
     )
 }

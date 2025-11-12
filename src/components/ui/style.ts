@@ -77,5 +77,12 @@ export const global = StyleSheet.create({
     inpError:{
         elevation: 8,
         shadowColor: "#ff0000ff",
+    },
+
+    errotext:{
+        color: "red",
+        fontSize: 13,
+        marginTop: height * 0.05
+
     }
 });
