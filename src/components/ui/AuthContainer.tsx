@@ -11,7 +11,7 @@ type Props = {
     children: React.ReactNode;
 }
 
-export default function AuthContainer({title, subtitle, icon, children}:Props){
+const AuthContainer = ({title, subtitle, icon, children}:Props) => {
 
     return (
         <SafeAreaView style={global.safeArea}>
@@ -33,3 +33,4 @@ export default function AuthContainer({title, subtitle, icon, children}:Props){
         </SafeAreaView>
     );
 }
+export default AuthContainer;

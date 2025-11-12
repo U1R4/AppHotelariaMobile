@@ -65,13 +65,17 @@ export const global = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: "rgba(216, 216, 216, 1)",
         paddingLeft: 10,
-        paddingRight: width * 0.4,
+        paddingRight: width * 0.2,
+        maxWidth:  width * 0.7,
+        minWidth: width * 0.7
     },
 
     icon: {
         marginRight: 10,
     },
 
-
-
+    inpError:{
+        elevation: 8,
+        shadowColor: "#ff0000ff",
+    }
 });

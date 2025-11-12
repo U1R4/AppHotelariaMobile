@@ -10,25 +10,28 @@ type Props = TextInputProps &{
     icon?: keyof typeof MaterialIcons.glyphMap;
 }
 
-export default function TextField({label, errortext, icon} : Props){
+const TextField = ({label, errortext, icon} : Props) => {
+
+    const [intput, setInput] = React.useState('');
 
     return(
         <View>
             <Text style={[global.subTitle]}>{label}</Text>
 
-            <View style={[global.inputBorder, global.inputBox]}>
+            <View style={[global.inputBox, global.inputBorder, errortext ? global.inpError : null]}>
                 {!! icon && (
                     <View>
                         <MaterialIcons style={global.icon} name={icon} size={18} color ="black"/>
                     </View>
                 )}
 
-                <TextInput 
-                    value="" 
+                <TextInput
+                    onChangeText={setInput}
+                    value={intput}
                     placeholder={label}
                 />
             </View>
         </View>
     )
-
 }
+export default TextField;
