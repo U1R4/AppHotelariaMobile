@@ -84,5 +84,18 @@ export const global = StyleSheet.create({
         fontSize: 13,
         marginTop: height * 0.05
 
-    }
+    },
+
+    eyeIcon: {
+        position: "absolute",
+        right: 12,
+        top: 72
+    },
+
+    LeftArrow: {
+        position: 'absolute',
+        top: 50,
+        left: 15,
+        zIndex: 10
+    },
 });

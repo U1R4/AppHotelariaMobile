@@ -10,7 +10,7 @@ type Props = TextInputProps &{
     icon?: keyof typeof MaterialIcons.glyphMap;
 }
 
-const TextField = ({label, errortext, icon} : Props) => {
+const TextField = ({label, errortext, icon, ...restInputProps} : Props) => {
 
     const [intput, setInput] = React.useState('');
 
@@ -28,8 +28,9 @@ const TextField = ({label, errortext, icon} : Props) => {
                 <TextInput
                     onChangeText={setInput}
                     value={intput}
-                    placeholder={label}
+                    {...restInputProps}
                 />
+                
             </View>
             {!! errortext &&<Text style={global.errotext}>{errortext}</Text>}
         </View>
