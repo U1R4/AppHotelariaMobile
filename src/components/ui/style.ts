@@ -38,6 +38,7 @@ export const global = StyleSheet.create({
         shadowRadius: 10,
         shadowOpacity: 0.05,
         paddingBottom: width * 0.1,
+        marginBottom: height * 0.2,
     },
 
     title:{
@@ -92,10 +93,27 @@ export const global = StyleSheet.create({
         top: 72
     },
 
-    LeftArrow: {
-        position: 'absolute',
-        top: 50,
-        left: 15,
-        zIndex: 10
+    modalView:{
+        margin:20,
+        backgroundColor: "#4e4e4eff",
+        borderRadius:20,
+        width:'90%',
+        padding:35,
+        alignItems:"center",
+        shadowColor:'#000',
+        shadowOffset:{
+            width:0,
+            height:2,
+        },
+        shadowOpacity:0.25,
+        shadowRadius:4,
+        elevation:5
     },
-});
+
+    centerView:{
+        flex:1,
+        justifyContent:"center",
+        alignItems:"center",
+        marginTop:22
+    },
+})

@@ -31,7 +31,7 @@ const RenderLogin = () => {
 
             <Button
                 title="Login"
-                onPress={() => console.log('Login')}
+                onPress={()=> router.push("/(tabs)/explorer")}
             />
             
             

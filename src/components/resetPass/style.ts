@@ -1,4 +1,5 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
+const {width, height} = Dimensions.get("window");
 
 export const style = StyleSheet.create({
 
@@ -36,8 +37,8 @@ export const style = StyleSheet.create({
 
   leftArrow: {
     position: 'absolute',
-    top: -200,
-    left: 10,
+    top: height * -0.23,
+    left: width * 0.02,
     zIndex: 10,
   },
 
