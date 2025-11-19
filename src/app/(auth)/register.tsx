@@ -3,7 +3,7 @@ import RenderRegister from "@/components/register";
 
 const register = () => {
     return (
-        <RenderRegister />
+        <RenderRegister/>
     );
 }
 export default register;

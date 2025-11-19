@@ -3,7 +3,7 @@ import RenderResetpass from "@/components/resetPass";
 
 const resetPass = () => {
     return (
-        <RenderResetpass />
+        <RenderResetpass/>
     );
 }
 export default resetPass;

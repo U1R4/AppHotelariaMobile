@@ -3,7 +3,9 @@ import { Tabs } from 'expo-router';
 
 const TabLayout = () => {
   return (
-        <Tabs screenOptions={{ tabBarActiveTintColor: '#424242ff', headerShown: false, tabBarStyle: {justifyContent: 'center', alignItems: "center", height: 60}}} >
+        <Tabs screenOptions={{ tabBarActiveTintColor: '#424242ff', headerShown: false, tabBarStyle: 
+        {justifyContent: 'center', alignItems: "center", height: 60, backgroundColor:'#dadadaff'}}} >
+
             <Tabs.Screen  name="explorer"  options={{  title: 'explorer',  tabBarIcon: ({ color }) =>
                 <MaterialCommunityIcons size={28} name="map" color={color} />}}/>
 

@@ -1,54 +1,57 @@
+import DatePicker from '@react-native-community/datetimepicker';
 import { useState } from "react";
-import { Modal, Text, TouchableOpacity, View } from "react-native";
-import DatePicker, { getFormatedDate } from 'react-native-modern-datepicker';
+import { Modal, Platform, Text, TouchableOpacity, View } from "react-native";
 import { global } from "./style";
 
 const DateSelector = () => {
-
     const [open, setOpen] = useState(false);
-    const [date, setDate] = useState('12/12/2023');
+    const [date, setDate] = useState(new Date());
 
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
-    const startDate = getFormatedDate(tomorrow, 'YYYY/MM/DD');
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
 
-    function handleOnPress() {
-        setOpen(!open);
-    }
-
-    function handleChange(propDate: string) {
-        setDate(propDate);
-    }
+    const handleChange = (event: any, selectedDate?: Date) => {
+        setOpen(false);
+        if (selectedDate) setDate(selectedDate);
+    };
 
     return(
         <View style={global.container}>
-            <TouchableOpacity onPress={handleOnPress}>
-                <Text>Open</Text>
+            <TouchableOpacity style={global.button} onPress={() => setOpen(true)}>
+                <Text style={global.buttonText}>Selecionar Data</Text>
+                <Text style={global.dateText}>{date.toLocaleDateString('pt-BR')}</Text>
             </TouchableOpacity>
 
-            <Modal
-            animationType="slide"
-            transparent={true}
-            visible={open}
-            >
-                <View style={global.centerView}>
-                    <View style={global.modalView}>
+            {Platform.OS === 'android' && open && (
+                <DatePicker
+                    value={date}
+                    mode="date"
+                    onChange={handleChange}
+                    minimumDate={tomorrow}
+                    themeVariant="dark"
+                />
+            )}
 
-                        <DatePicker
-                        mode='calendar'
-                        selected={date}
-                        minimumDate={startDate}
-                        onSelectedChange={handleChange}
-                        />
-
-                        <TouchableOpacity onPress={handleOnPress}>
-                            <Text>Close</Text>
-                        </TouchableOpacity>
+            {Platform.OS === 'ios' && (
+                <Modal animationType="slide" transparent visible={open}>
+                    <View style={global.modalOverlay}>
+                        <View style={global.modalContent}>
+                            <DatePicker
+                                value={date}
+                                mode="date"
+                                display="spinner"
+                                onChange={handleChange}
+                                minimumDate={tomorrow}
+                                textColor="#ffffff"
+                                style={global.iosPicker}
+                            />
+                            <TouchableOpacity style={global.closeButton} onPress={() => setOpen(false)}>
+                                <Text style={global.closeButtonText}>Fechar</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
-
-            </Modal>
+                </Modal>
+            )}
         </View>
     )
 }

@@ -116,4 +116,59 @@ export const global = StyleSheet.create({
         alignItems:"center",
         marginTop:22
     },
-})
+
+        button: {
+        backgroundColor: '#686868ff',
+        padding: 10,
+        borderRadius: 5,
+        height: height * 0.08
+    },
+
+    buttonText: {
+        color: '#ffffffff',
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 4,
+    },
+
+    dateText: {
+        color: '#cccccc',
+        fontSize: 14,
+    },
+
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    modalContent: {
+        backgroundColor: '#1a1a1a',
+        borderRadius: 20,
+        padding: 20,
+        margin: 20,
+        borderWidth: 1,
+        borderColor: '#333333',
+    },
+
+    iosPicker: {
+        backgroundColor: '#2d2d2d',
+        borderRadius: 15,
+    },
+
+    closeButton: {
+        backgroundColor: '#444444',
+        padding: 12,
+        borderRadius: 20,
+        marginTop: 15,
+        alignItems: 'center',
+    },
+    
+    closeButtonText: {
+        color: '#ffffff',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+});
+
