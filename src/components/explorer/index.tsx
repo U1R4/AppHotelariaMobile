@@ -11,8 +11,8 @@ const RenderExplorer = () => {
       <SafeAreaView style={global.safeArea}>
         <View style={global.content}> 
           <View style={{flex:1, flexDirection:"row", backgroundColor:"#727272ff", borderRadius:10}}>
-            <DateSelector/>
-            <DateSelector/>
+            <DateSelector label= ' Check-in'/>
+            <DateSelector label= 'Check-out'/>
           </View>
           
           <ScrollView

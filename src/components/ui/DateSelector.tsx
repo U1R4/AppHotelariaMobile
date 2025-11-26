@@ -3,12 +3,17 @@ import { useState } from "react";
 import { Modal, Platform, Text, TouchableOpacity, View } from "react-native";
 import { global } from "./style";
 
-const DateSelector = () => {
+type Props = {
+    label: string;
+}
+
+const DateSelector = ({label}:Props) => {
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState(new Date());
 
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
+    
 
     const handleChange = (event: any, selectedDate?: Date) => {
         setOpen(false);
@@ -18,7 +23,7 @@ const DateSelector = () => {
     return(
         <View style={global.container}>
             <TouchableOpacity style={global.button} onPress={() => setOpen(true)}>
-                <Text style={global.buttonText}>Selecionar Data</Text>
+                <Text style={global.buttonText}>{label}</Text>
                 <Text style={global.dateText}>{date.toLocaleDateString('pt-BR')}</Text>
             </TouchableOpacity>
 
@@ -28,7 +33,7 @@ const DateSelector = () => {
                     mode="date"
                     onChange={handleChange}
                     minimumDate={tomorrow}
-                    themeVariant="dark"
+                    themeVariant='dark'
                 />
             )}
 
@@ -42,7 +47,7 @@ const DateSelector = () => {
                                 display="spinner"
                                 onChange={handleChange}
                                 minimumDate={tomorrow}
-                                textColor="#ffffff"
+                                textColor="#ffffffff"
                                 style={global.iosPicker}
                             />
                             <TouchableOpacity style={global.closeButton} onPress={() => setOpen(false)}>
