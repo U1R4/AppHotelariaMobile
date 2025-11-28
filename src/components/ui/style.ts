@@ -18,9 +18,9 @@ export const global = StyleSheet.create({
     },
     
     container:{
-        paddingHorizontal: width * 0.07,
-        paddingTop: height * 0.05,
-        paddingBottom: height * 0.05,
+        paddingHorizontal: width * 0.03,
+        paddingTop: height * 0.03,
+        paddingBottom: height * 0.03,
     },
 
     header:{
@@ -117,7 +117,7 @@ export const global = StyleSheet.create({
         marginTop:22
     },
 
-        button: {
+    button: {
         backgroundColor: '#686868ff',
         padding: 10,
         borderRadius: 5,

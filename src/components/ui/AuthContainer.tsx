@@ -5,7 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { global } from "./style";
 
 type Props = {
-    title: string;
+    title?: string;
     subtitle?:string;
     icon?: keyof typeof FontAwesome6.glyphMap;
     children: React.ReactNode;

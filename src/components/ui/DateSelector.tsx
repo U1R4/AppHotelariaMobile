@@ -1,64 +1,39 @@
-import DatePicker from '@react-native-community/datetimepicker';
-import { useState } from "react";
-import { Modal, Platform, Text, TouchableOpacity, View } from "react-native";
-import { global } from "./style";
+import { Dimensions, View } from "react-native";
+import DatePicker, { getToday } from 'react-native-modern-datepicker';
 
 type Props = {
-    label: string;
+    onSelectDate: (date : string) => void
 }
 
-const DateSelector = ({label}:Props) => {
-    const [open, setOpen] = useState(false);
-    const [date, setDate] = useState(new Date());
+const DateSelector = ({onSelectDate} : Props) => {
 
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    
+    const { width, height } = Dimensions.get("window");
+    const startDate = getToday();
 
-    const handleChange = (event: any, selectedDate?: Date) => {
-        setOpen(false);
-        if (selectedDate) setDate(selectedDate);
-    };
+    return (
+        <View>
 
-    return(
-        <View style={global.container}>
-            <TouchableOpacity style={global.button} onPress={() => setOpen(true)}>
-                <Text style={global.buttonText}>{label}</Text>
-                <Text style={global.dateText}>{date.toLocaleDateString('pt-BR')}</Text>
-            </TouchableOpacity>
+            <DatePicker
+                mode="calendar"
+                options={{
+                mainColor: "#4b0505",
+                textHeaderColor: "#4b0505",
+                textDefaultColor: "#4b0505",
+                textSecondaryColor: "#4b0505",
+                textFontSize: 14,
+                textHeaderFontSize: 16
+                }}
+                style={{borderRadius: 15, width: width * 0.62, height: height * 0.35}}
+                isGregorian={true}
+                minimumDate={startDate}
+                onSelectedChange={(date) => {
+                    onSelectDate(date);
+                }}
+            />
 
-            {Platform.OS === 'android' && open && (
-                <DatePicker
-                    value={date}
-                    mode="date"
-                    onChange={handleChange}
-                    minimumDate={tomorrow}
-                    themeVariant='dark'
-                />
-            )}
-
-            {Platform.OS === 'ios' && (
-                <Modal animationType="slide" transparent visible={open}>
-                    <View style={global.modalOverlay}>
-                        <View style={global.modalContent}>
-                            <DatePicker
-                                value={date}
-                                mode="date"
-                                display="spinner"
-                                onChange={handleChange}
-                                minimumDate={tomorrow}
-                                textColor="#ffffffff"
-                                style={global.iosPicker}
-                            />
-                            <TouchableOpacity style={global.closeButton} onPress={() => setOpen(false)}>
-                                <Text style={global.closeButtonText}>Fechar</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </Modal>
-            )}
         </View>
     )
-}
+
+};
 
 export default DateSelector;

@@ -1,43 +1,52 @@
-import DateSelector from '@/components/ui/DateSelector';
 import { global } from '@/components/ui/style';
-import { ScrollView, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import RoomCard from '../ui/RoomCard';
-
+import { Dimensions, TouchableOpacity, View } from 'react-native';
+import DateSelector from '../ui/DateSelector';
+import TextField from '../ui/TextField';
+import AuthContainer from '../ui/AuthContainer';
+import { useState } from 'react';
 
 const RenderExplorer = () => {
+
+  const { width, height } = Dimensions.get("window");
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
+
+  const [calendar, setCalendar] = useState <"checkin" | "checkout">();
+
   return (
-    <ScrollView>
-      <SafeAreaView style={global.safeArea}>
-        <View style={global.content}> 
-          <View style={{flex:1, flexDirection:"row", backgroundColor:"#727272ff", borderRadius:10}}>
-            <DateSelector label= ' Check-in'/>
-            <DateSelector label= 'Check-out'/>
-          </View>
+
+    <AuthContainer>
+      <View>
+        <TouchableOpacity onPress={() => setCalendar("checkin")}>
+          <TextField
+            label='Chek-In'
+            icon={{lib: "MaterialCommunityIcons", name: "calendar-blank"}}
+            placeholder='Selecione a data de Check-In'
+          />
+        </TouchableOpacity>
+
+        {
+        calendar == "checkin" && (
+          <DateSelector onSelectDate={(date) => {setCheckIn(date)}}/>
+        )}
+
+        <TouchableOpacity onPress={() => setCalendar("checkout")}>
+          <TextField
+            label='Chek-Out'
+            icon={{lib: "MaterialCommunityIcons", name: "calendar-blank"}}
+            placeholder='Selecione a data de Check-Out'
+          />
+        </TouchableOpacity>
+        
+        {
+        calendar == "checkout" && (
+          <DateSelector onSelectDate={(date) => {setCheckOut(date)}}/>
+        )}
           
-          <ScrollView
-          horizontal={true}
-          >
-            <RoomCard/>
-            <RoomCard/>
-            <RoomCard/>
-            <RoomCard/>
-            <RoomCard/>
-          </ScrollView>
-    
-          <ScrollView
-          horizontal={true}
-          >
-            <RoomCard/>
-            <RoomCard/>
-            <RoomCard/>
-            <RoomCard/>
-            <RoomCard/>
-          </ScrollView>
-        </View>
-      
-    </SafeAreaView>
-    </ScrollView>
+      </View>
+    </AuthContainer> 
+
   )
+
 }  
 export default RenderExplorer;
