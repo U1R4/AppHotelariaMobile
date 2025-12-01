@@ -1,9 +1,10 @@
-import { global } from '@/components/ui/style';
-import { Dimensions, TouchableOpacity, View } from 'react-native';
-import DateSelector from '../ui/DateSelector';
-import TextField from '../ui/TextField';
-import AuthContainer from '../ui/AuthContainer';
 import { useState } from 'react';
+import { Dimensions, ScrollView, TouchableOpacity, View } from 'react-native';
+import AuthContainer from '../ui/AuthContainer';
+import DateSelector from '../ui/DateSelector';
+import RoomCard from '../ui/RoomCard';
+import TextField from '../ui/TextField';
+import { global } from '../ui/style';
 
 const RenderExplorer = () => {
 
@@ -16,11 +17,11 @@ const RenderExplorer = () => {
   return (
 
     <AuthContainer>
-      <View>
+      <View style={global.content}>
         <TouchableOpacity onPress={() => setCalendar("checkin")}>
           <TextField
             label='Chek-In'
-            icon={{lib: "MaterialCommunityIcons", name: "calendar-blank"}}
+            icon='book'
             placeholder='Selecione a data de Check-In'
           />
         </TouchableOpacity>
@@ -33,7 +34,7 @@ const RenderExplorer = () => {
         <TouchableOpacity onPress={() => setCalendar("checkout")}>
           <TextField
             label='Chek-Out'
-            icon={{lib: "MaterialCommunityIcons", name: "calendar-blank"}}
+            icon = "book"
             placeholder='Selecione a data de Check-Out'
           />
         </TouchableOpacity>
@@ -42,6 +43,20 @@ const RenderExplorer = () => {
         calendar == "checkout" && (
           <DateSelector onSelectDate={(date) => {setCheckOut(date)}}/>
         )}
+
+        <ScrollView horizontal>
+          <RoomCard/>
+          <RoomCard/>
+          <RoomCard/>
+          <RoomCard/>
+        </ScrollView>
+
+        <ScrollView horizontal>
+          <RoomCard/>
+          <RoomCard/>
+          <RoomCard/>
+          <RoomCard/>
+        </ScrollView>
           
       </View>
     </AuthContainer> 
