@@ -1,26 +1,67 @@
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { FontAwesome5, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
+import { Image, Text, TouchableOpacity, View } from "react-native";
+import { global } from "./style";
 
-const RoomCard = () => {
+type NameIcon =
+  | { lib: "MaterialIcons"; name: keyof typeof MaterialIcons.glyphMap }
+  | { lib: "FontAwesome6"; name: keyof typeof FontAwesome6.glyphMap }
+  | { lib: "FontAwesome5"; name: keyof typeof FontAwesome5.glyphMap };
+
+type Infos = { title?: string; text: string; price: number };
+
+type Props = {
+  label?: string;
+  description?: Infos;
+  icon?: NameIcon;
+};
+
+const RoomCard = ({ label, description, icon }: Props) => {
   return (
-    <View style={{ maxWidth: 320, margin: 10, borderRadius: 20, backgroundColor: '#b3b3b3ff' }}>
-      <TouchableOpacity style={{borderRadius:20, padding:10}}>
+    <View style={global.cardContainer}>
+      <TouchableOpacity style={global.touchableFixed}>
         <Image
           source={require('../../../assets/images/casalCinzaLuxo.jpg')}
-          style={{borderRadius:10, height: 150, width: '100%' }}
+          style={global.imageFixed}
           resizeMode="cover"
         />
-        <View style={{ padding: 16 }}>
-          <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 8 }}>
-            Room 1
-          </Text>
-          <Text style={{ color: '#000000ff', fontSize: 14 }}>
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
-          </Text>
+        <View style={global.cardContentFixed}>
+          {!!label && (
+            <Text style={global.label} numberOfLines={1}>{label}</Text>
+          )}
+          
+          <View style={global.iconContainer}>
+            {!!icon && (
+              <>
+                {icon.lib === "MaterialIcons" && (
+                  <MaterialIcons name={icon.name} size={20} color="#000000ff" />
+                )}
+                {icon.lib === "FontAwesome5" && (
+                  <FontAwesome5 name={icon.name} size={20} color="#000000ff" />
+                )}
+                {icon.lib === "FontAwesome6" && (
+                  <FontAwesome6 name={icon.name} size={20} color="#000000ff" />
+                )}
+              </>
+            )}
+          </View>
+
+          {!!description && (
+            <View style={global.descriptionContainerFixed}>
+              <View style={{ flex: 1 }}>
+                {!!description.title && (
+                  <Text style={global.titleCard} numberOfLines={1}>{description.title}</Text>
+                )}
+                <Text style={global.textFixed} numberOfLines={2}>{description.text}</Text>
+              </View>
+              <View style={global.priceContainer}>
+                <Text style={global.price}>R$ {description.price.toFixed(2)}</Text>
+              </View>
+            </View>
+          )}
         </View>
       </TouchableOpacity>
     </View>
   );
-}
+};
 
 export default RoomCard;

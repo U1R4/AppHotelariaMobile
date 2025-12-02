@@ -1,13 +1,17 @@
-import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome5, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import { Text, TextInput, TextInputProps, View } from "react-native";
 import { global } from "./style";
 
-
+type NameIcon =
+  | { lib: "MaterialIcons"; name: keyof typeof MaterialIcons.glyphMap }
+  | { lib: "FontAwesome6"; name: keyof typeof FontAwesome6.glyphMap }
+  | { lib: "FontAwesome5"; name: keyof typeof FontAwesome5.glyphMap };
+  
 type Props = TextInputProps &{
     label: string;
     errortext?: string;
-    icon?: keyof typeof MaterialIcons.glyphMap;
+    icon?: NameIcon;
 }
 
 const TextField = ({label, errortext, icon, ...restInputProps} : Props) => {
@@ -21,7 +25,7 @@ const TextField = ({label, errortext, icon, ...restInputProps} : Props) => {
             <View style={[global.inputBox, global.inputBorder, errortext ? global.inpError : null]}>
                 {!! icon && (
                     <View>
-                        <MaterialIcons style={global.icon} name={icon} size={18} color ="black"/>
+                        <MaterialIcons style={global.icon} NameIcon={icon} size={18} color ="black"/>
                     </View>
                 )}
 

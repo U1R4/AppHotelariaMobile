@@ -95,7 +95,7 @@ export const global = StyleSheet.create({
 
     modalView:{
         margin:20,
-        backgroundColor: "#4e4e4eff",
+        backgroundColor: "#9c9c9cff",
         borderRadius:20,
         width:'90%',
         padding:35,
@@ -170,5 +170,95 @@ export const global = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
+
+  label: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    color: '#000000',
+  },
+  iconContainer: {
+    marginBottom: 12,
+  },
+
+  titleCard: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 4,
+    color: '#333333',
+  },
+  priceContainer: {
+    marginLeft: 10,
+  },
+  price: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#146814ff',
+  },
+
+  touchableFixed: {
+    borderRadius: 20,
+    padding: width * 0.03,
+    height: '100%',
+  },
+  imageFixed: {
+    borderRadius: 10,
+    height: height * 0.18,
+    width: '100%',
+  },
+  cardContentFixed: {
+    padding: width * 0.04,
+    height: height * 0.15,
+    justifyContent: 'space-between',
+  },
+  textFixed: {
+    color: '#000000',
+    fontSize: 14,
+    maxHeight: 40,
+  },
+  descriptionContainerFixed: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flex: 1,
+    marginTop: 8,
+  },
+  
+  cardContainer: {
+    width: width * 0.9,
+    height: height * 0.4,
+    maxWidth: 350,
+    margin: 10,
+    borderRadius: 20,
+    backgroundColor: '#b3b3b3ff',
+  },
+  touchable: {
+    borderRadius: 20,
+    padding: width * 0.03,
+    height: '100%',
+  },
+  image: {
+    borderRadius: 10,
+    height: height * 0.18,
+    width: '100%',
+  },
+  cardContent: {
+    padding: width * 0.04,
+    height: height * 0.15,
+    justifyContent: 'space-between',
+  },
+  text: {
+    color: '#000000',
+    fontSize: 14,
+    maxHeight: 40,
+  },
+  descriptionContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flex: 1,
+    marginTop: 8,
+  },
+
 });
 
