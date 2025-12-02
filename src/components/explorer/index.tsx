@@ -31,47 +31,47 @@ const RenderExplorer = () => {
   return (
     <AuthContainer>
       <View style={global.content}>
-        
-        <View style={{ marginBottom: 20, width: width * 0.9 }}>
-          <TouchableOpacity onPress={() => setShowDatePicker("checkin")}>
-            <TextField 
-              label="Check-in" 
-              icon={{ lib: "FontAwesome5", name: "calendar-alt" }}
-              placeholder="Selecione a data" 
-              value={formatDateForDisplay(checkIn)} 
-            />
-          </TouchableOpacity>
-          
-          {showDatePicker === "checkin" && (
-            <DateSelector 
-              onSelectDate={(date) => { 
-                setCheckIn(date);
-              }}
-              onClose={() => setShowDatePicker(null)}
-            />
-          )}
-        </View>
+        <View style={{ flex:1,flexDirection:"row"}}>
+          <View style={{ marginBottom: 20, width: width * 0.5}}>
+            <TouchableOpacity onPress={() => setShowDatePicker("checkin")}>
+              <TextField 
+                label="Check-in" 
+                icon={{ lib: "FontAwesome5", name: "calendar-alt" }}
+                placeholder="Check-in" 
+                value={formatDateForDisplay(checkIn)} 
+              />
+            </TouchableOpacity>
 
-        <View style={{ marginBottom: 20, width: width * 0.9 }}>
-          <TouchableOpacity onPress={() => setShowDatePicker("checkout")}>
-            <TextField 
-              label="Check-out" 
-              icon={{ lib: "FontAwesome5", name: "calendar-alt" }}
-              placeholder="Selecione a data" 
-              value={formatDateForDisplay(checkOut)} 
-            />
-          </TouchableOpacity>
-          
-          {showDatePicker === "checkout" && (
-            <DateSelector 
-              onSelectDate={(date) => { 
-                setCheckOut(date);
-              }}
-              onClose={() => setShowDatePicker(null)}
-            />
-          )}
-        </View>
+            {showDatePicker === "checkin" && (
+              <DateSelector 
+                onSelectDate={(date) => { 
+                  setCheckIn(date);
+                }}
+                onClose={() => setShowDatePicker(null)}
+              />
+            )}
+          </View>
 
+          <View style={{ marginBottom: 20, width: width * 0.9 }}>
+            <TouchableOpacity onPress={() => setShowDatePicker("checkout")}>
+              <TextField 
+                label="Check-out" 
+                icon={{ lib: "FontAwesome5", name: "calendar-alt" }}
+                placeholder="Check-out" 
+                value={formatDateForDisplay(checkOut)} 
+              />
+            </TouchableOpacity>
+
+            {showDatePicker === "checkout" && (
+              <DateSelector 
+                onSelectDate={(date) => { 
+                  setCheckOut(date);
+                }}
+                onClose={() => setShowDatePicker(null)}
+              />
+            )}
+          </View>
+        </View>
         <ScrollView horizontal style={{ marginBottom: 20 }} showsHorizontalScrollIndicator={false}>
           <RoomCard 
             label="Apartamento Luxo"
