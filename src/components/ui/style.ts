@@ -193,7 +193,7 @@ export const global = StyleSheet.create({
   price: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#146814ff',
+    color: '#1f7e1fff',
   },
 
   touchableFixed: {
@@ -208,7 +208,7 @@ export const global = StyleSheet.create({
   },
   cardContentFixed: {
     padding: width * 0.04,
-    height: height * 0.15,
+    height: height * 0.19,
     justifyContent: 'space-between',
   },
   textFixed: {
@@ -239,12 +239,12 @@ export const global = StyleSheet.create({
   },
   image: {
     borderRadius: 10,
-    height: height * 0.18,
+    height: height * 0.20,
     width: '100%',
   },
   cardContent: {
     padding: width * 0.04,
-    height: height * 0.15,
+    height: height * 0.20,
     justifyContent: 'space-between',
   },
   text: {
@@ -259,6 +259,5 @@ export const global = StyleSheet.create({
     flex: 1,
     marginTop: 8,
   },
-
 });
 

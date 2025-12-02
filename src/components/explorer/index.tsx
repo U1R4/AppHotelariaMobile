@@ -13,12 +13,10 @@ const RenderExplorer = () => {
   const [checkOut, setCheckOut] = useState("");
   const [showDatePicker, setShowDatePicker] = useState<"checkin" | "checkout" | null>(null);
 
-  // Função para formatar a data para exibição
   const formatDateForDisplay = (dateString: string): string => {
     if (!dateString) return "";
     
     try {
-      // Converte de DD/MM/YYYY para formato de exibição
       const parts = dateString.split('/');
       if (parts.length === 3) {
         const [day, month, year] = parts;
@@ -34,7 +32,6 @@ const RenderExplorer = () => {
     <AuthContainer>
       <View style={global.content}>
         
-        {/* Check-in */}
         <View style={{ marginBottom: 20, width: width * 0.9 }}>
           <TouchableOpacity onPress={() => setShowDatePicker("checkin")}>
             <TextField 
@@ -48,7 +45,6 @@ const RenderExplorer = () => {
           {showDatePicker === "checkin" && (
             <DateSelector 
               onSelectDate={(date) => { 
-                console.log("Check-in selecionado:", date);
                 setCheckIn(date);
               }}
               onClose={() => setShowDatePicker(null)}
@@ -56,7 +52,6 @@ const RenderExplorer = () => {
           )}
         </View>
 
-        {/* Check-out */}
         <View style={{ marginBottom: 20, width: width * 0.9 }}>
           <TouchableOpacity onPress={() => setShowDatePicker("checkout")}>
             <TextField 
@@ -70,7 +65,6 @@ const RenderExplorer = () => {
           {showDatePicker === "checkout" && (
             <DateSelector 
               onSelectDate={(date) => { 
-                console.log("Check-out selecionado:", date);
                 setCheckOut(date);
               }}
               onClose={() => setShowDatePicker(null)}
@@ -78,7 +72,6 @@ const RenderExplorer = () => {
           )}
         </View>
 
-        {/* Room Cards */}
         <ScrollView horizontal style={{ marginBottom: 20 }} showsHorizontalScrollIndicator={false}>
           <RoomCard 
             label="Apartamento Luxo"

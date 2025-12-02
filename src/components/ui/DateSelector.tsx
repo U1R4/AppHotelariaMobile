@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { Dimensions, Text, TouchableOpacity, View } from "react-native";
-import DatePicker, { getToday } from 'react-native-modern-datepicker';
+import DatePicker from 'react-native-modern-datepicker';
 import { global } from "./style";
 
 type Props = {
@@ -10,20 +9,13 @@ type Props = {
 
 const DateSelector = ({ onSelectDate, onClose }: Props) => {
     const { width, height } = Dimensions.get("window");
-    const startDate = getToday();
-    const [selectedDate, setSelectedDate] = useState<string>("");
+    
+    const today = new Date();
+    const startDate = `${today.getFullYear()}/${(today.getMonth() + 1).toString().padStart(2, '0')}/${today.getDate().toString().padStart(2, '0')}`;
 
-    const handleDateSelect = (date: string) => {
-        console.log("Data selecionada:", date);
-        setSelectedDate(date);
-    };
-
-    const handleConfirm = () => {
-        if (selectedDate) {
-            const formattedDate = formatDateToBR(selectedDate);
-            onSelectDate(formattedDate);
-        }
-        if (onClose) onClose();
+    const handleDateSelect = (date: string) => { 
+        const formattedDate = formatDateToBR(date); 
+        onSelectDate(formattedDate);
     };
 
     const formatDateToBR = (dateString: string): string => {
@@ -35,7 +27,6 @@ const DateSelector = ({ onSelectDate, onClose }: Props) => {
             }
             return dateString;
         } catch (error) {
-            console.error("Erro ao formatar data:", error);
             return dateString;
         }
     };
@@ -53,6 +44,8 @@ const DateSelector = ({ onSelectDate, onClose }: Props) => {
                         textSecondaryColor: "#4b0505",
                         textFontSize: 14,
                         textHeaderFontSize: 16,
+                        defaultFont: "System",
+                        headerFont: "System"
                     }}
                     style={{ 
                         borderRadius: 15, 
@@ -61,25 +54,17 @@ const DateSelector = ({ onSelectDate, onClose }: Props) => {
                     }}
                     isGregorian={true}
                     minimumDate={startDate}
-                    selected={selectedDate || startDate}
+                    selected={startDate}
                     onSelectedChange={handleDateSelect}
+                    onDateChange={() => {}}
                 />
 
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', marginTop: 15 }}>
-                    <TouchableOpacity 
-                        style={[global.closeButton, { flex: 1, marginRight: 10, backgroundColor: '#666' }]}
-                        onPress={onClose}
-                    >
-                        <Text style={global.closeButtonText}>Cancelar</Text>
-                    </TouchableOpacity>
-                    
-                    <TouchableOpacity 
-                        style={[global.closeButton, { flex: 1, marginLeft: 10, backgroundColor: '#4b0505' }]}
-                        onPress={handleConfirm}
-                    >
-                        <Text style={global.closeButtonText}>Confirmar</Text>
-                    </TouchableOpacity>
-                </View>
+                <TouchableOpacity 
+                    style={global.closeButton}
+                    onPress={onClose}
+                >
+                    <Text style={global.closeButtonText}>Fechar</Text>
+                </TouchableOpacity>
 
             </View>
         </View>
