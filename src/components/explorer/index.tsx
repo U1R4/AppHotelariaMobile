@@ -1,7 +1,9 @@
+import { Text } from "@react-navigation/elements";
 import { useState } from "react";
 import { Dimensions, ScrollView, TouchableOpacity, View } from "react-native";
 import AuthContainer from "../ui/AuthContainer";
 import DateSelector from "../ui/DateSelector";
+import InputSpin from "../ui/InputSpin";
 import RoomCard from "../ui/RoomCard";
 import TextField from "../ui/TextField";
 import { global } from "../ui/style";
@@ -12,6 +14,7 @@ const RenderExplorer = () => {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [showDatePicker, setShowDatePicker] = useState<"checkin" | "checkout" | null>(null);
+  const [qtdGuests, setQtdGuests] = useState("");
 
   const formatDateForDisplay = (dateString: string): string => {
     if (!dateString) return "";
@@ -31,8 +34,8 @@ const RenderExplorer = () => {
   return (
     <AuthContainer>
       <View style={global.content}>
-        <View style={{ flex:1,flexDirection:"row"}}>
-          <View style={{ marginBottom: 20, width: width * 0.5}}>
+        <View style={{ flex:1,flexDirection:"column"}}>
+          <View style={{ marginBottom: 20, width: width * 0.9, alignItems:"center"}}>
             <TouchableOpacity onPress={() => setShowDatePicker("checkin")}>
               <TextField 
                 label="Check-in" 
@@ -52,7 +55,7 @@ const RenderExplorer = () => {
             )}
           </View>
 
-          <View style={{ marginBottom: 20, width: width * 0.9 }}>
+          <View style={{ marginBottom: 20, width: width * 0.9, alignItems:"center" }}>
             <TouchableOpacity onPress={() => setShowDatePicker("checkout")}>
               <TextField 
                 label="Check-out" 
@@ -71,6 +74,16 @@ const RenderExplorer = () => {
               />
             )}
           </View>
+          
+          <View style={{alignItems:"center"}}>
+            <Text style={global.label}>Quantidade de Hospedes</Text>
+            <InputSpin
+              onSelectSpin={(guests)=>
+                setQtdGuests(guests)
+              }
+            />
+          </View>
+          
         </View>
         <ScrollView horizontal style={{ marginBottom: 20 }} showsHorizontalScrollIndicator={false}>
           <RoomCard 
