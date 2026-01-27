@@ -225,7 +225,7 @@ export const global = StyleSheet.create({
   },
   
   cardContainer: {
-    width: width * 0.9,
+    width: width * 0.8,
     height: height * 0.4,
     maxWidth: 350,
     margin: 10,
