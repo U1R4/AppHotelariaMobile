@@ -1,13 +1,14 @@
-class Task {
+export default class Task {
   id: number;
   name: string;
   description: string;
 
-  private static nextID = 1;
+  private static nextId = 1;
 
-  constructor(name: string, description: string) {
-    this.id = Task.nextID++;
+  constructor(name:string, description:string) {
+    this.id = Task.nextId++;
     this.name = name;
     this.description = description;
   }
+
 }
