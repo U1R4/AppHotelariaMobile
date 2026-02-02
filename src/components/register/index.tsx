@@ -6,6 +6,7 @@ import PassField from "../ui/PassFiled";
 import TextField from "../ui/TextField";
 import { Button } from "./Button";
 import { style } from "./style";
+import React from "react";
 
 
 const RenderRegister = () => {

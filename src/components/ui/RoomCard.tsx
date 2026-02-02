@@ -1,6 +1,7 @@
 import { FontAwesome5, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { global } from "./style";
+import React from "react";
 
 type NameIcon =
   | { lib: "MaterialIcons"; name: keyof typeof MaterialIcons.glyphMap }

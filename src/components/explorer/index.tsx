@@ -7,6 +7,7 @@ import InputSpin from "../ui/InputSpin";
 import RoomCard from "../ui/RoomCard";
 import TextField from "../ui/TextField";
 import { global } from "../ui/style";
+import React from "react";
 
 const RenderExplorer = () => {
   const { width } = Dimensions.get("window");

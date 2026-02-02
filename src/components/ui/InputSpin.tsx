@@ -1,3 +1,4 @@
+import React from "react";
 import { Dimensions } from "react-native";
 import InputSpinner from "react-native-input-spinner";
 

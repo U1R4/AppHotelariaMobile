@@ -8,35 +8,51 @@ type NameIcon =
   | { lib: "FontAwesome6"; name: keyof typeof FontAwesome6.glyphMap }
   | { lib: "FontAwesome5"; name: keyof typeof FontAwesome5.glyphMap };
   
-type Props = TextInputProps &{
+type Props = TextInputProps & {
     label: string;
     errortext?: string;
     icon?: NameIcon;
+    value?: string;
+    onChangeText?: (text: string) => void;
 }
 
-const TextField = ({label, errortext, icon, ...restInputProps} : Props) => {
+const TextField = ({label, errortext, icon, value, onChangeText, ...restInputProps} : Props) => {
 
-    const [intput, setInput] = React.useState('');
+    const renderIcon = () => {
+        if (!icon) return null;
+        
+        switch (icon.lib) {
+            case 'MaterialIcons':
+                return <MaterialIcons name={icon.name} size={18} color="black" />;
+            case 'FontAwesome6':
+                return <FontAwesome6 name={icon.name} size={18} color="black" />;
+            case 'FontAwesome5':
+                return <FontAwesome5 name={icon.name} size={18} color="black" />;
+            default:
+                return null;
+        }
+    };
 
     return(
         <View>
             <Text style={[global.subTitle]}>{label}</Text>
 
             <View style={[global.inputBox, global.inputBorder, errortext ? global.inpError : null]}>
-                {!! icon && (
-                    <View>
-                        <MaterialIcons style={global.icon} NameIcon={icon} size={18} color ="black"/>
+                {!!icon && (
+                    <View style={{ marginRight: 8 }}>
+                        {renderIcon()}
                     </View>
                 )}
 
                 <TextInput
-                    onChangeText={setInput}
-                    value={intput}
+                    onChangeText={onChangeText}
+                    value={value}
+                    style={{ flex: 1 }}
                     {...restInputProps}
                 />
                 
             </View>
-            {!! errortext &&<Text style={global.errotext}>{errortext}</Text>}
+            {!!errortext && <Text style={global.errotext}>{errortext}</Text>}
         </View>
     )
 }
