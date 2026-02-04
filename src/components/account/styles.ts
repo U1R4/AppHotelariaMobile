@@ -1,196 +1,146 @@
 import { Dimensions, StyleSheet } from 'react-native';
-const {width, height} = Dimensions.get("window");
+
+const { width, height } = Dimensions.get('window');
+const rf = (size: number) => size * (width / 375);
+
+export const Colors = {
+  darkPrimary: '#121212',
+  darkSecondary: '#1a1a1a',
+  darkTertiary: '#2d2d2d',
+  goldPrimary: '#D4AF37',
+  inputBackground: '#ffffff',
+  inputText: '#121212',
+  inputBorder: '#e0e0e0',
+  grayLight: '#f5f5f5',
+  textPrimary: '#ffffff',
+  textSecondary: '#cccccc',
+  overlay: 'rgba(0,0,0,0.7)',
+};
 
 export const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
-    backgroundColor: '#707070',
-    borderRadius: 9,
-    justifyContent: 'center',
+    backgroundColor: Colors.darkPrimary,
   },
   scrollContent: {
-    paddingHorizontal: width * 0.1,
-    paddingVertical: height * 0.02,
-    minHeight: height * 0.8,
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems:'center',
-    alignContent:'center'
-  },
-  contentWrapper: {
-    width: '100%',
-    alignItems: 'center',
+    padding: 20,
   },
   fieldContainer: {
-    backgroundColor: '#bdbdbd',
-    borderRadius: 8,
+    backgroundColor: Colors.darkSecondary,
+    borderRadius: 12,
     padding: 16,
-    marginBottom: 12,
+    marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#686868',
-    width: '100%',
+    borderColor: Colors.inputBorder,
+  },
+  fieldContainerGold: {
+    borderColor: Colors.goldPrimary,
   },
   fieldLabel: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#424242',
-    marginBottom: 4,
+    fontSize: rf(12),
+    color: Colors.goldPrimary,
+    marginBottom: 8,
+    letterSpacing: 1,
   },
-  fieldValue: {
-    fontSize: 16,
-    color: '#212121',
+  textFieldInput: {
+    backgroundColor: Colors.inputBackground,
+    borderRadius: 8,
+    padding: 12,
+    fontSize: rf(15),
+    color: Colors.inputText,
   },
-  maskedInputContainer: {
-    width: '100%',
+  textFieldInputFocused: {
+    borderColor: Colors.goldPrimary,
+    borderWidth: 2,
   },
   maskedInput: {
-    backgroundColor: '#ffffff',
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: '#bdbdbd',
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    color: '#212121',
-    width: '100%',
-    fontSize: 16,
+    backgroundColor: Colors.inputBackground,
+    borderRadius: 8,
+    padding: 12,
+    fontSize: rf(15),
+  },
+  maskedInputFocused: {
+    borderColor: Colors.goldPrimary,
+    borderWidth: 2,
   },
   disabledInput: {
-    backgroundColor: '#e0e0e0',
-    color: '#757575',
-    borderColor: '#b0b0b0',
+    backgroundColor: Colors.grayLight,
   },
   passwordRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: '100%',
   },
-  changePasswordButton: {
-    backgroundColor: '#616161',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 6,
+  passwordDots: {
+    fontSize: rf(18),
+    color: Colors.textPrimary,
   },
   changePasswordText: {
-    color: '#ffffff',
-    fontSize: 14,
-    fontWeight: '500',
+    color: Colors.goldPrimary,
+    fontSize: rf(14),
   },
   actionsContainer: {
     marginTop: 24,
-    gap: 12,
-    marginBottom: 30,
-    width: '100%',
   },
+  customButton: {
+    backgroundColor: Colors.darkTertiary,
+    paddingVertical: 14,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 12,
+  },
+  secondaryButton: {
+    backgroundColor: 'transparent',
+    borderWidth: 1.5,
+    borderColor: Colors.goldPrimary,
+  },
+  buttonText: {
+    color: Colors.textPrimary,
+    fontWeight: '600',
+    letterSpacing: 1,
+  },
+
+  /* MODAL */
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: Colors.overlay,
   },
   modalContainer: {
-    width: width * 0.9,
-    maxWidth: 400,
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
+    width: '85%',
+    maxHeight: '85%',
+    backgroundColor: Colors.darkSecondary,
+    borderRadius: 16,
     overflow: 'hidden',
   },
   modalHeader: {
-    backgroundColor: '#757575',
-    padding: 20,
     alignItems: 'center',
+    padding: 20,
+    borderBottomWidth: 2,
+    borderBottomColor: Colors.goldPrimary,
   },
   modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#ffffff',
+    color: Colors.goldPrimary,
+    fontSize: rf(18),
+    marginTop: 8,
+  },
+  modalSubtitle: {
+    color: Colors.textSecondary,
+    textAlign: 'center',
+    marginTop: 6,
   },
   modalBody: {
     padding: 20,
-    backgroundColor: '#fafafa',
   },
   modalInput: {
-    backgroundColor: '#ffffff',
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: '#bdbdbd',
-    marginBottom: 16,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    color: '#212121',
-    width: '100%',
+    backgroundColor: Colors.inputBackground,
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 12,
   },
   modalFooter: {
-    padding: 20,
-    backgroundColor: '#f5f5f5',
-    borderTopWidth: 1,
-    borderTopColor: '#e0e0e0',
-    gap: 12,
-  },
-  modalButton: {
-    width: '100%',
-  },
-  btnBaseButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 3,
-    width: '100%',
-  },
-  btnBaseText: {
-    fontWeight: '600',
-    textAlign: 'center',
-    color: '#ffffff',
-  },
-  btnPrimary: {
-    backgroundColor: '#2196F3',
-  },
-  btnSecondary: {
-    backgroundColor: '#696969',
-  },
-  btnDanger: {
-    backgroundColor: '#f44336',
-  },
-  btnSuccess: {
-    backgroundColor: '#4CAF50',
-  },
-  btnSmall: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-  },
-  btnMedium: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-  },
-  btnLarge: {
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-  },
-  btnTextSmall: {
-    fontSize: 12,
-  },
-  btnTextMedium: {
-    fontSize: 16,
-  },
-  btnTextLarge: {
-    fontSize: 18,
-  },
-  btnDisabled: {
-    backgroundColor: '#bdbdbd',
-    opacity: 0.6,
-  },
-  btnTextDisabled: {
-    color: '#9e9e9e',
-  },
-  btnIconContainer: {
-    marginRight: 8,
-  },
-  btnLoader: {
-    marginRight: 8,
+    padding: 16,
   },
 });

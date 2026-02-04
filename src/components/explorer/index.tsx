@@ -1,17 +1,14 @@
-import { Text } from "@react-navigation/elements";
-import { useState } from "react";
-import { Dimensions, ScrollView, TouchableOpacity, View } from "react-native";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import React, { useState } from "react";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import AuthContainer from "../ui/AuthContainer";
 import DateSelector from "../ui/DateSelector";
 import InputSpin from "../ui/InputSpin";
 import RoomCard from "../ui/RoomCard";
 import TextField from "../ui/TextField";
-import { global } from "../ui/style";
-import React from "react";
+import { Colors, global } from "../ui/style";
 
 const RenderExplorer = () => {
-  const { width } = Dimensions.get("window");
-  
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [showDatePicker, setShowDatePicker] = useState<"checkin" | "checkout" | null>(null);
@@ -32,107 +29,207 @@ const RenderExplorer = () => {
     }
   };
 
+const handleDateSelect = (date: string) => {
+    if (showDatePicker === "checkin") {
+        setCheckIn(date);
+    } else if (showDatePicker === "checkout") {
+        setCheckOut(date);
+    }
+};
+
   return (
-    <AuthContainer>
-      <View style={global.content}>
-        <View style={{ flex:1,flexDirection:"column"}}>
-          <View style={{ marginBottom: 20, width: width * 0.9, alignItems:"center"}}>
-            <TouchableOpacity onPress={() => setShowDatePicker("checkin")}>
-              <TextField 
-                label="Check-in" 
-                icon={{ lib: "FontAwesome5", name: "calendar-alt" }}
-                placeholder="Check-in" 
-                value={formatDateForDisplay(checkIn)} 
-              />
-            </TouchableOpacity>
+    <View style={{ flex: 1 }}>
+      <AuthContainer
+        title="Explorar Quartos"
+        icon="bed"
+      >
+        <ScrollView style={global.container} contentContainerStyle={{ paddingBottom: 30 }}>
+          {/* Seção de datas */}
+          <View style={global.sectionContainer}>
+            <Text style={global.sectionTitle}>
+              <MaterialCommunityIcons name="calendar-range" size={18} color={Colors.goldPrimary} /> DATAS
+            </Text>
+            
+            <View style={global.dateInputContainer}>
+              <TouchableOpacity 
+                onPress={() => setShowDatePicker("checkin")} 
+                style={{ width: '100%' }}
+                activeOpacity={0.7}
+              >
+                <View style={[global.fieldContainer, global.fieldContainerGold]}>
+                  <Text style={global.fieldLabel}>
+                    <MaterialCommunityIcons name="calendar-arrow-right" size={14} color={Colors.goldPrimary} /> CHECK-IN
+                  </Text>
+                  <TextField 
+                    label=""
+                    icon={{ lib: "FontAwesome5", name: "calendar-alt" }}
+                    placeholder="Selecione a data de entrada" 
+                    value={formatDateForDisplay(checkIn)} 
+                    style={{ backgroundColor: Colors.inputBackground }}
+                    editable={false}
+                    pointerEvents="none"
+                  />
+                  <Text style={global.fieldSubtitle}>Data de entrada no hotel</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
 
-            {showDatePicker === "checkin" && (
-              <DateSelector 
-                onSelectDate={(date) => { 
-                  setCheckIn(date);
-                }}
-                onClose={() => setShowDatePicker(null)}
-              />
-            )}
+            <View style={global.dateInputContainer}>
+              <TouchableOpacity 
+                onPress={() => setShowDatePicker("checkout")} 
+                style={{ width: '100%' }}
+                activeOpacity={0.7}
+              >
+                <View style={[global.fieldContainer, global.fieldContainerGold]}>
+                  <Text style={global.fieldLabel}>
+                    <MaterialCommunityIcons name="calendar-arrow-left" size={14} color={Colors.goldPrimary} /> CHECK-OUT
+                  </Text>
+                  <TextField 
+                    label=""
+                    icon={{ lib: "FontAwesome5", name: "calendar-alt" }}
+                    placeholder="Selecione a data de saída" 
+                    value={formatDateForDisplay(checkOut)} 
+                    style={{ backgroundColor: Colors.inputBackground }}
+                    editable={false}
+                    pointerEvents="none"
+                  />
+                  <Text style={global.fieldSubtitle}>Data de saída do hotel</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
 
-          <View style={{ marginBottom: 20, width: width * 0.9, alignItems:"center" }}>
-            <TouchableOpacity onPress={() => setShowDatePicker("checkout")}>
-              <TextField 
-                label="Check-out" 
-                icon={{ lib: "FontAwesome5", name: "calendar-alt" }}
-                placeholder="Check-out" 
-                value={formatDateForDisplay(checkOut)} 
-              />
-            </TouchableOpacity>
+          {/* Divisor dourado */}
+          <View style={global.goldDivider} />
 
-            {showDatePicker === "checkout" && (
-              <DateSelector 
-                onSelectDate={(date) => { 
-                  setCheckOut(date);
-                }}
-                onClose={() => setShowDatePicker(null)}
-              />
-            )}
+          {/* Seção de hóspedes */}
+          <View style={global.sectionContainer}>
+            <Text style={global.sectionTitle}>
+              <MaterialCommunityIcons name="account-group" size={18} color={Colors.goldPrimary} /> HÓSPEDES
+            </Text>
+            
+            <View style={global.guestsContainer}>
+              <Text style={global.fieldLabel}>
+                QUANTIDADE DE HÓSPEDES
+              </Text>
+              <View style={global.inputSpinContainer}>
+                <InputSpin
+                  onSelectSpin={(guests) => setQtdGuests(guests)}
+                  guests={qtdGuests}
+                  minGuests={1} 
+                  colorMax={Colors.goldPrimary} 
+                  colorMin={Colors.textSecondary} 
+                  max={6} 
+                  step={1}
+                />
+              </View>
+              <Text style={global.fieldSubtitle}>Máximo de 6 hóspedes por quarto</Text>
+            </View>
           </View>
-          
-          <View style={{alignItems:"center"}}>
-            <Text style={global.label}>Quantidade de Hospedes</Text>
-            <InputSpin
-              onSelectSpin={(guests) => setQtdGuests(guests)}
-              guests={qtdGuests}
-              minGuests={1} 
-              colorMax={"#b16464"} 
-              colorMin={"#7e7e7e"} 
-              max={6} 
-              step={1}              />
+
+          {/* Divisor dourado */}
+          <View style={global.goldDivider} />
+
+          {/* Seção de quartos disponíveis */}
+          <View style={global.sectionContainer}>
+            <Text style={global.sectionTitle}>
+              <MaterialCommunityIcons name="bed-king" size={18} color={Colors.goldPrimary} /> QUARTOS DISPONÍVEIS
+            </Text>
+            
+            <ScrollView 
+              horizontal 
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={global.scrollViewContainer}
+            >
+              <View style={global.roomCardContainer}>
+                <RoomCard 
+                  label="Apartamento Luxo"
+                  icon={{ lib: "FontAwesome5", name: "bed" }}
+                  description={{
+                    title: "Quarto Casal",
+                    text: "1 cama de casal king size\nAr condicionado\nTV 50\"",
+                    price: 280.90
+                  }}
+                  containerStyle={{backgroundColor: Colors.darkSecondary, borderColor: Colors.goldPrimary}}
+                />
+              </View>
+              
+              <View style={global.roomCardContainer}>
+                <RoomCard 
+                  label="Suíte Familiar"
+                  icon={{ lib: "FontAwesome5", name: "user-friends" }}            
+                  description={{
+                    title: "Quarto Familiar",
+                    text: "2 camas de casal\n2 camas de solteiro\nVaranda",
+                    price: 420.50
+                  }}
+                  containerStyle={{backgroundColor: Colors.darkSecondary, borderColor: Colors.goldPrimary}}
+                />
+              </View>
+            </ScrollView>
           </View>
-          
+
+          {/* Seção de mais opções */}
+          <View style={global.sectionContainer}>
+            <Text style={global.sectionTitle}>
+              <MaterialCommunityIcons name="star-circle" size={18} color={Colors.goldPrimary} /> MAIS OPÇÕES
+            </Text>
+            
+            <ScrollView 
+              horizontal 
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={global.scrollViewContainer}
+            >
+              <View style={global.roomCardContainer}>
+                <RoomCard 
+                  label="Suíte Premium"
+                  icon={{ lib: "FontAwesome5", name: "crown" }}
+                  description={{
+                    title: "Quarto Premium",
+                    text: "Vista para o mar\nHidromassagem\nServiço de quarto 24h",
+                    price: 650.00
+                  }}
+                  containerStyle={{backgroundColor: Colors.darkSecondary, borderColor: Colors.goldPrimary}}
+                />
+              </View>
+              
+              <View style={global.roomCardContainer}>
+                <RoomCard 
+                  label="Apartamento Simples"
+                  icon={{ lib: "FontAwesome5", name: "home" }}
+                  description={{
+                    title: "Quarto Simples",
+                    text: "1 cama de casal\nBanheiro privativo\nWiFi gratuito",
+                    price: 180.90
+                  }}
+                  containerStyle={{backgroundColor: Colors.darkSecondary, borderColor: Colors.goldPrimary}}
+                />
+              </View>
+            </ScrollView>
+          </View>
+
+          <View style={{ height: 30 }} />
+        </ScrollView>
+      </AuthContainer>
+      {showDatePicker && (
+        <View style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: Colors.overlay,
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1000,
+        }}>
+          <DateSelector 
+            onSelectDate={handleDateSelect}
+            onClose={() => setShowDatePicker(null)}
+          />
         </View>
-        <ScrollView horizontal style={{ marginBottom: 20 }} showsHorizontalScrollIndicator={false}>
-          <RoomCard 
-            label="Apartamento Luxo"
-            icon={{ lib: "FontAwesome5", name: "bed" }}
-            description={{
-              title: "Quarto Casal",
-              text: "1 cama de casal king size\nAr condicionado\nTV 50\"",
-              price: 280.90
-            }}
-          />
-          <RoomCard 
-            label="Suíte Familiar"
-             icon={{ lib: "FontAwesome5", name: "user" }}            
-             description={{
-              title: "Quarto Familiar",
-              text: "2 camas de casal\n2 camas de solteiro\nVaranda",
-              price: 420.50
-            }}
-          />
-        </ScrollView>
-
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <RoomCard 
-            label="Suíte Premium"
-             icon={{ lib: "FontAwesome5", name: "star" }}
-            description={{
-              title: "Quarto Premium",
-              text: "Vista para o mar\nHidromassagem\nServiço de quarto 24h",
-              price: 650.00
-            }}
-          />
-          <RoomCard 
-            label="Apartamento Simples"
-             icon={{ lib: "FontAwesome5", name: "home" }}
-            description={{
-              title: "Quarto Simples",
-              text: "1 cama de casal\nBanheiro privativo\nWiFi gratuito",
-              price: 180.90
-            }}
-          />
-        </ScrollView>
-
-      </View>
-    </AuthContainer>
+      )}
+    </View>
   );
 };
 

@@ -1,28 +1,45 @@
+import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { Modal, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Dimensions,
+  Modal,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { TextInputMask } from 'react-native-masked-text';
 import AuthContainer from '../ui/AuthContainer';
-import PassField from '../ui/PassFiled';
 import TextField from '../ui/TextField';
-import Button from './Button';
-import { styles } from './styles';
+import { Colors, styles } from './styles';
+
+const { width } = Dimensions.get('window');
+const responsiveFont = (size: number) => size * (width / 375);
+const iconSize = responsiveFont(18);
 
 const MyAccount = () => {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [focusedField, setFocusedField] = useState<string | null>(null);
+
   const [userData, setUserData] = useState({
     name: 'alacazan',
     email: 'a@a.a',
-    phone: '12 12345-1234',
-    cpf: '123.123.123-12'
+    phone: '(12) 12345-1234',
+    cpf: '123.123.123-12',
   });
+
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
     newPassword: '',
-    confirmPassword: ''
+    confirmPassword: '',
   });
 
   const handleSaveChanges = () => {
-    console.log('Dados salvos:', userData);
+    alert('Alterações salvas com sucesso!');
   };
 
   const handlePasswordChange = () => {
@@ -30,147 +47,203 @@ const MyAccount = () => {
     setPasswordData({
       currentPassword: '',
       newPassword: '',
-      confirmPassword: ''
+      confirmPassword: '',
     });
+    alert('Senha alterada com sucesso!');
   };
 
-  return (
-    <AuthContainer
-      title="Minha Conta"
-      icon="user"
+  const CustomButton = ({ title, onPress, variant = 'primary' }: any) => (
+    <TouchableOpacity
+      style={[
+        styles.customButton,
+        variant === 'secondary' && styles.secondaryButton,
+      ]}
+      onPress={onPress}
+      activeOpacity={0.85}
     >
+      <Text
+        style={[
+          styles.buttonText,
+          variant === 'secondary' && { color: Colors.goldPrimary },
+        ]}
+      >
+        {title}
+      </Text>
+
+      {variant === 'secondary' && (
+        <FontAwesome5
+          name="crown"
+          size={responsiveFont(14)}
+          color={Colors.goldPrimary}
+          style={{ marginLeft: responsiveFont(4), opacity: 0.7 }}
+        />
+      )}
+    </TouchableOpacity>
+  );
+
+  return (
+    <AuthContainer title="Minha Conta" icon="user">
       <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.scrollContent}>
-        <View style={styles.contentWrapper}>
-          {/* Campo Nome */}
-          <View style={styles.fieldContainer}>
-            <TextField
-              label="Nome"
-              value={userData.name}
-              onChangeText={(text) => setUserData({...userData, name: text})}
-              icon={{ lib: "FontAwesome6", name: "user" }}
-              placeholder="Digite seu nome"
-            />
-          </View>
+        {/* NOME */}
+        <View style={[styles.fieldContainer, styles.fieldContainerGold]}>
+          <Text style={styles.fieldLabel}>
+            <MaterialCommunityIcons
+              name="account-outline"
+              size={iconSize}
+              color={Colors.goldPrimary}
+            />{' '}
+            NOME
+          </Text>
 
-          {/* Campo E-mail */}
-          <View style={styles.fieldContainer}>
-            <TextField
-              label="E-mail"
-              value={userData.email}
-              onChangeText={(text) => setUserData({...userData, email: text})}
-              icon={{ lib: "FontAwesome6", name: "envelope" }}
-              placeholder="Digite seu e-mail"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-          </View>
+          <TextField
+            value={userData.name}
+            onChangeText={(text) => setUserData({ ...userData, name: text })}
+            placeholder="Digite seu nome completo"
+            style={[
+              styles.textFieldInput,
+              focusedField === 'name' && styles.textFieldInputFocused,
+            ]}
+            onFocus={() => setFocusedField('name')}
+            onBlur={() => setFocusedField(null)} label={''}          />
+        </View>
 
-          {/* Campo Telefone */}
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>Telefone:</Text>
-            <TextInputMask
-              type={'cel-phone'}
-              options={{
-                maskType: 'BRL',
-                withDDD: true,
-                dddMask: '(99) '
-              }}
-              value={userData.phone}
-              onChangeText={(text) => setUserData({...userData, phone: text})}
-              style={styles.maskedInput}
-              placeholder="Digite seu telefone"
-              placeholderTextColor="#9e9e9e"
-              keyboardType="phone-pad"
-            />
-          </View>
+        {/* EMAIL */}
+        <View style={styles.fieldContainer}>
+          <Text style={styles.fieldLabel}>
+            <MaterialCommunityIcons
+              name="email-outline"
+              size={iconSize}
+              color={Colors.goldPrimary}
+            />{' '}
+            E-MAIL
+          </Text>
 
-          {/* Campo CPF (somente visual) */}
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>CPF:</Text>
-            <TextInputMask
-              type={'cpf'}
-              value={userData.cpf}
-              onChangeText={(text) => setUserData({...userData, cpf: text})}
-              style={[styles.maskedInput, styles.disabledInput]}
-              placeholder="Digite seu CPF"
-              placeholderTextColor="#9e9e9e"
-              keyboardType="numeric"
-              editable={false}
-            />
-          </View>
+          <TextField
+            value={userData.email}
+            onChangeText={(text) => setUserData({ ...userData, email: text })}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            style={[
+              styles.textFieldInput,
+              focusedField === 'email' && styles.textFieldInputFocused,
+            ]}
+            onFocus={() => setFocusedField('email')}
+            onBlur={() => setFocusedField(null)} label={''}          />
+        </View>
 
-          {/* Campo Senha */}
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>Senha:</Text>
-            <View style={styles.passwordRow}>
-              <Text style={styles.fieldValue}>**********</Text>
-              <TouchableOpacity
-                style={styles.changePasswordButton}
-                onPress={() => setShowPasswordModal(true)}
-              >
-                <Text style={styles.changePasswordText}>Alterar Senha</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+        {/* TELEFONE */}
+        <View style={styles.fieldContainer}>
+          <Text style={styles.fieldLabel}>
+            <MaterialCommunityIcons
+              name="phone-outline"
+              size={iconSize}
+              color={Colors.goldPrimary}
+            />{' '}
+            TELEFONE
+          </Text>
 
-          {/* Botão de Salvar */}
-          <View style={styles.actionsContainer}>
-            <Button
-              title="Salvar Alterações"
-              onPress={handleSaveChanges}
-              variant="success"
-              size="large"
-            />
+          <TextInputMask
+            type="cel-phone"
+            options={{ withDDD: true, dddMask: '(99) ' }}
+            value={userData.phone}
+            onChangeText={(text) => setUserData({ ...userData, phone: text })}
+            style={[
+              styles.maskedInput,
+              focusedField === 'phone' && styles.maskedInputFocused,
+            ]}
+            onFocus={() => setFocusedField('phone')}
+            onBlur={() => setFocusedField(null)}
+          />
+        </View>
+
+        {/* CPF */}
+        <View style={styles.fieldContainer}>
+          <Text style={styles.fieldLabel}>
+            <MaterialCommunityIcons
+              name="card-account-details-outline"
+              size={iconSize}
+              color={Colors.goldPrimary}
+            />{' '}
+            CPF
+          </Text>
+
+          <TextInputMask
+            type="cpf"
+            value={userData.cpf}
+            editable={false}
+            style={[styles.maskedInput, styles.disabledInput]}
+          />
+        </View>
+
+        {/* SENHA */}
+        <View style={[styles.fieldContainer, styles.fieldContainerGold]}>
+          <Text style={styles.fieldLabel}>
+            <MaterialCommunityIcons
+              name="lock-outline"
+              size={iconSize}
+              color={Colors.goldPrimary}
+            />{' '}
+            SENHA
+          </Text>
+
+          <View style={styles.passwordRow}>
+            <Text style={styles.passwordDots}>•••••••••</Text>
+
+            <TouchableOpacity onPress={() => setShowPasswordModal(true)}>
+              <Text style={styles.changePasswordText}>
+                <MaterialCommunityIcons
+                  name="key-change"
+                  size={responsiveFont(16)}
+                  color={Colors.goldPrimary}
+                />{' '}
+                ALTERAR SENHA
+              </Text>
+            </TouchableOpacity>
           </View>
+        </View>
+
+        <View style={styles.actionsContainer}>
+          <CustomButton title="Salvar Alterações" onPress={handleSaveChanges} />
         </View>
       </ScrollView>
 
-      {/* Modal para alterar senha */}
-      <Modal
-        visible={showPasswordModal}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={() => setShowPasswordModal(false)}
-      >
+      {/* MODAL */}
+      <Modal visible={showPasswordModal} transparent animationType="fade">
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Alterar Senha</Text>
-            </View>
-            
-            <View style={styles.modalBody}>
-              <PassField
-                placeholder="Senha atual"
-                value={passwordData.currentPassword}
-                onChangeText={(text) => setPasswordData({ ...passwordData, currentPassword: text })}
-                style={styles.modalInput} label={''}              />
-              <PassField
-                placeholder="Nova senha"
-                value={passwordData.newPassword}
-                onChangeText={(text) => setPasswordData({ ...passwordData, newPassword: text })}
-                style={styles.modalInput} label={''}              />
-              <PassField
-                placeholder="Confirmar nova senha"
-                value={passwordData.confirmPassword}
-                onChangeText={(text) => setPasswordData({ ...passwordData, confirmPassword: text })}
-                style={styles.modalInput} label={''}              />
-            </View>
-            
-            <View style={styles.modalFooter}>
-              <Button
-                title="Confirmar"
-                onPress={handlePasswordChange}
-                variant="primary"
-                size="large"
-                style={styles.modalButton}
+              <MaterialCommunityIcons
+                name="shield-lock-outline"
+                size={responsiveFont(32)}
+                color={Colors.goldPrimary}
               />
-              <Button
+              <Text style={styles.modalTitle}>Alterar Senha</Text>
+              <Text style={styles.modalSubtitle}>
+                Atualize suas credenciais de segurança
+              </Text>
+            </View>
+
+            <View style={styles.modalBody}>
+              {['currentPassword', 'newPassword', 'confirmPassword'].map((field, index) => (
+                <TextInput
+                  key={field}
+                  placeholder="Digite sua senha"
+                  secureTextEntry
+                  style={styles.modalInput}
+                  value={(passwordData as any)[field]}
+                  onChangeText={(text) =>
+                    setPasswordData({ ...passwordData, [field]: text })
+                  }
+                />
+              ))}
+            </View>
+
+            <View style={styles.modalFooter}>
+              <CustomButton title="Confirmar Alteração" onPress={handlePasswordChange} />
+              <CustomButton
                 title="Cancelar"
-                onPress={() => setShowPasswordModal(false)}
                 variant="secondary"
-                size="large"
-                style={styles.modalButton}
+                onPress={() => setShowPasswordModal(false)}
               />
             </View>
           </View>

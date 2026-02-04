@@ -12,7 +12,6 @@ type Props = {
 }
 
 const AuthContainer = ({title, subtitle, icon, children}:Props) => {
-
     return (
         <SafeAreaView style={global.safeArea}>
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={global.KeyboardAvoiding}>
@@ -20,7 +19,7 @@ const AuthContainer = ({title, subtitle, icon, children}:Props) => {
 
                 <View style = {global.header}>
                     {!!icon && <FontAwesome6 name={icon} size={50} color="white"/>}
-                    <Text style = {[global.textWhite, global.title]}>{title}</Text>
+                    {!!title && <Text style = {[global.textWhite, global.title]}>{title}</Text>}
                     {!!subtitle && <Text style = {[global.textWhite, global.subTitle]}>{subtitle}</Text>}
                 </View>
 
