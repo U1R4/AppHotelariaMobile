@@ -1,33 +1,19 @@
-import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import {
-  SafeAreaView,
   ScrollView,
   StatusBar,
   Text,
-  TouchableOpacity,
   View
 } from 'react-native';
+import AuthContainer from '../ui/AuthContainer';
 import ReserveCard from '../ui/ReserveCard';
 import { Colors, global } from '../ui/style';
 
 const RenderReserve = () => {
   return (
-    <SafeAreaView style={global.safeArea}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.darkPrimary} />
-      
-      {/* Header Navigation */}
-      <View style={global.reservePageHeader}>
-        <TouchableOpacity style={global.reservePageBackButton}>
-          <Ionicons name="arrow-back" size={24} color={Colors.goldPrimary} />
-        </TouchableOpacity>
-        
-        <Text style={global.reservePageHeaderTitle}>Escolha seu quarto</Text>
-        
-        <View style={global.reservePagePlaceholder} />
-      </View>
 
-      {/* Content Area */}
+    <AuthContainer>
+      <StatusBar barStyle="light-content" backgroundColor={Colors.darkPrimary} />
       <ScrollView 
         style={global.container}
         contentContainerStyle={global.reservePageScrollContent}
@@ -46,7 +32,7 @@ const RenderReserve = () => {
           <Text style={global.reservePageEmptyText}>Nenhuma outra reserva encontrada</Text>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </AuthContainer>
   );
 };
 

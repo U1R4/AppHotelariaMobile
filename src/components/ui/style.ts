@@ -375,14 +375,7 @@ modalContent: {
     fontWeight: 'bold',
     color: Colors.goldPrimary,
   },
-  touchableFixed: {
-    borderRadius: responsiveWidth(4),
-    padding: responsiveWidth(2.5),
-    height: '100%',
-    backgroundColor: Colors.cardBackground,
-    borderWidth: 1.5,
-    borderColor: Colors.goldPrimary,
-  },
+
   imageFixed: {
     borderRadius: responsiveWidth(3),
     height: responsiveHeight(16),
@@ -404,12 +397,7 @@ modalContent: {
     justifyContent: 'space-between',
     flex: 1,
   },
-  cardContainer: {
-    width: responsiveWidth(75),
-    height: responsiveHeight(32),
-    margin: responsiveWidth(2),
-    borderRadius: responsiveWidth(4),
-  },
+
   fieldContainer: {
     backgroundColor: Colors.darkSecondary,
     borderRadius: responsiveWidth(3),
@@ -826,4 +814,184 @@ modalContent: {
     letterSpacing: 0.5,
     marginRight: responsiveWidth(2),
   },
+
+  roomCardReserveButtonText: {
+    color: Colors.darkPrimary,
+    fontSize: responsiveFont(14),
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+
+  // Estilos para o BottomSheet de reserva
+  bottomSheetReserveContent: {
+    padding: responsiveWidth(5),
+    flex: 1,
+  },
+
+  bottomSheetReserveTitle: {
+    fontSize: responsiveFont(24),
+    fontWeight: '700',
+    color: Colors.goldPrimary,
+    marginBottom: responsiveHeight(3),
+    textAlign: 'center',
+    letterSpacing: 0.5,
+  },
+
+  bottomSheetReserveCard: {
+    backgroundColor: Colors.darkSecondary,
+    borderRadius: responsiveWidth(4),
+    padding: responsiveWidth(4),
+    marginBottom: responsiveHeight(3),
+    borderWidth: 1,
+    borderColor: 'rgba(212, 175, 55, 0.15)',
+  },
+
+  bottomSheetReserveCardHeader: {
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(212, 175, 55, 0.1)',
+    paddingBottom: responsiveHeight(1.5),
+    marginBottom: responsiveHeight(2),
+  },
+
+  bottomSheetReserveRoomLabel: {
+    fontSize: responsiveFont(16),
+    fontWeight: '600',
+    color: Colors.goldPrimary,
+    letterSpacing: 0.3,
+  },
+
+  bottomSheetReserveCardBody: {
+    paddingVertical: responsiveHeight(0.5),
+  },
+
+  bottomSheetReserveRoomTitle: {
+    fontSize: responsiveFont(14),
+    fontWeight: '500',
+    color: Colors.textPrimary,
+    marginBottom: responsiveHeight(1),
+    letterSpacing: 0.2,
+  },
+
+  bottomSheetReserveRoomDescription: {
+    fontSize: responsiveFont(12),
+    color: Colors.textSecondary,
+    marginBottom: responsiveHeight(2),
+    lineHeight: responsiveFont(16),
+    letterSpacing: 0.1,
+  },
+
+  bottomSheetReservePriceContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: responsiveHeight(1.5),
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(212, 175, 55, 0.1)',
+  },
+
+  bottomSheetReservePriceLabel: {
+    fontSize: responsiveFont(12),
+    color: Colors.textSecondary,
+    fontWeight: '500',
+  },
+
+  bottomSheetReservePrice: {
+    fontSize: responsiveFont(20),
+    fontWeight: '700',
+    color: Colors.goldPrimary,
+  },
+
+  bottomSheetReserveDivider: {
+    height: 1,
+    backgroundColor: 'rgba(212, 175, 55, 0.1)',
+    marginVertical: responsiveHeight(2),
+  },
+
+  bottomSheetReserveActions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: responsiveHeight(2),
+  },
+
+  bottomSheetReserveCancelButton: {
+    flex: 1,
+    marginRight: responsiveWidth(2),
+    backgroundColor: Colors.darkTertiary,
+    paddingVertical: responsiveHeight(2),
+    borderRadius: responsiveWidth(2.5),
+    borderWidth: 1,
+    borderColor: Colors.textSecondary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  bottomSheetReserveCancelButtonText: {
+    color: Colors.textSecondary,
+    fontSize: responsiveFont(14),
+    fontWeight: '600',
+  },
+
+  bottomSheetReserveConfirmButton: {
+    flex: 1,
+    marginLeft: responsiveWidth(2),
+    backgroundColor: Colors.goldPrimary,
+    paddingVertical: responsiveHeight(2),
+    borderRadius: responsiveWidth(2.5),
+    borderWidth: 1,
+    borderColor: Colors.goldAccent,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  bottomSheetReserveConfirmButtonText: {
+    color: Colors.darkPrimary,
+    fontSize: responsiveFont(14),
+    fontWeight: '700',
+  },
+
+  roomCardHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: responsiveHeight(0.8),
+  },
+
+  roomCardDescriptionText: {
+    lineHeight: responsiveFont(13),
+  },
+
+cardContainer: {
+  width: responsiveWidth(75),
+  height: responsiveHeight(40),
+  borderRadius: responsiveWidth(4),
+  borderWidth: 1,
+  borderColor: 'red',
+},
+
+touchableFixed: {
+  borderRadius: responsiveWidth(4),
+  padding: responsiveWidth(2.5),
+  height: responsiveHeight(30),
+  backgroundColor: Colors.cardBackground,
+  borderWidth: 1.5,
+  borderColor: Colors.goldPrimary,
+},
+
+roomCardReserveButton: {
+  backgroundColor: Colors.goldPrimary,
+  paddingVertical: responsiveHeight(1.5),
+  paddingHorizontal: responsiveWidth(6),
+  borderRadius: responsiveWidth(2.5),
+  marginTop: responsiveHeight(1.5),
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderWidth: 1.5,
+  borderColor: Colors.goldAccent,
+  shadowColor: Colors.goldPrimary,
+  shadowOffset: { width: 0, height: responsiveHeight(0.3) },
+  shadowOpacity: 0.3,
+  shadowRadius: responsiveWidth(2),
+  elevation: 5,
+
+},
 });
