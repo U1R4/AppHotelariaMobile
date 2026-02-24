@@ -28,7 +28,7 @@ const RenderLogin = () => {
 
     const canSubmit = email && password && Object.keys(errors).length === 0 && !loading;
     
-     const handleSubmit = async () => {
+    const handleSubmit = async () => {
         try {
           setLoading(true);
           console.log("[LOGIN] Tentando login com: ", {
