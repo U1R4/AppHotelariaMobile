@@ -1,9 +1,18 @@
+import { useAuth } from "@/context/AuthContext";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Tabs } from 'expo-router';
+import { Redirect, Tabs } from 'expo-router';
 import React from "react";
 
 const TabLayout = () => {
-  return (
+  
+    const {token, isLoading} = useAuth();
+    if(isLoading) return null;
+ 
+    if(!token){
+        return <Redirect href="/(auth)" />;
+    }
+
+    return (
         <Tabs screenOptions={{ tabBarActiveTintColor: '#424242ff', headerShown: false, tabBarStyle: 
         {justifyContent: 'center', alignItems: "center", height: 60, backgroundColor:'#dadadaff'}}} >
 

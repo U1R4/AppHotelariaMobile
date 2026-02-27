@@ -1,4 +1,6 @@
+import { useAuth } from '@/context/AuthContext';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
   Dimensions,
@@ -41,6 +43,14 @@ const MyAccount = () => {
   const handleSaveChanges = () => {
     alert('Alterações salvas com sucesso!');
   };
+
+    const { signOut } = useAuth();
+    const router = useRouter();
+    const handleLogout = async () => {
+      signOut();
+      router.replace("/(auth)");
+    }
+  
 
   const handlePasswordChange = () => {
     setShowPasswordModal(false);
@@ -205,6 +215,9 @@ const MyAccount = () => {
         <View style={styles.actionsContainer}>
           <CustomButton title="Salvar Alterações" onPress={handleSaveChanges} />
         </View>
+        <View style={styles.actionsContainer}>
+          <CustomButton title="Logout" onPress={handleLogout} />
+        </View>
       </ScrollView>
 
       {/* MODAL */}
@@ -246,6 +259,7 @@ const MyAccount = () => {
                 onPress={() => setShowPasswordModal(false)}
               />
             </View>
+
           </View>
         </View>
       </Modal>

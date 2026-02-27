@@ -104,6 +104,7 @@ const RenderRegister = () => {
                         style={style.inputField}
                         placeholderTextColor={style.placeholderColor.color}
                     />
+                    
                     <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
                         <MaterialCommunityIcons 
                             name={showPassword ? "eye-off" : "eye"} 
