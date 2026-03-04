@@ -15,24 +15,25 @@ function isValidEmail(email: string) {
 const RenderLogin = () => {
     const{ signIn } = useAuth();
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [senha, setSenha] = useState("");
     const [loading, setLoading] = useState(false);
-    const [touched, setTouched] = useState<{email?: boolean; password?: boolean}>({});
+    const [touched, setTouched] = useState<{email?: boolean; senha?: boolean}>({});
 
     const errors = useMemo(() => {
         const error: Record<string, string> = {};
         if (touched.email && !email) error.email = "E-mail obrigatório";
-        if (touched.password && !password) error.password = "Senha obrigatória";
+        if (touched.senha && !senha) error.senha = "Senha obrigatória";
         if (touched.email && email && !isValidEmail(email)) error.email = "Digite um e-mail válido";
         return error;
-    }, [email, password, touched]);
+    }, [email, senha, touched]);
 
-    const canSubmit = email && password && Object.keys(errors).length === 0 && !loading;
+    const canSubmit = email && senha && Object.keys(errors).length === 0 && !loading;
     
      const handleSubmit = async () => {
     try {
         setLoading(true);
-        await signIn(email.trim(), password);
+        console.log("Tentando logar com:", { email, senha });
+        await signIn(email.trim(), senha);
         Alert.alert("Login bem-sucedido!");
         router.replace("/(tabs)/explorer");
     } catch (erro: any) {
@@ -63,10 +64,10 @@ const RenderLogin = () => {
                 label="Senha"
                 icon={{ lib: "MaterialIcons", name: "key" }}
                 placeholder="***********"
-                value={password}
-                onChangeText={setPassword}
-                onBlur={() => setTouched(prev => ({ ...prev, password: true }))}
-                errortext={errors.password}
+                value={senha}
+                onChangeText={setSenha}
+                onBlur={() => setTouched(prev => ({ ...prev, senha: true }))}
+                errortext={errors.senha}
             />
 
             <Button
