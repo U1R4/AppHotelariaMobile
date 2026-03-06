@@ -1,4 +1,5 @@
 import { Dimensions, StyleSheet } from 'react-native';
+import { responsiveFont } from '../ui/style';
 
 const { width, height } = Dimensions.get('window');
 const rf = (size: number) => size * (width / 375);
@@ -121,6 +122,16 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: Colors.goldPrimary,
   },
+
+userDataText: {
+  color: Colors.textPrimary,
+  fontSize: responsiveFont(16),
+  paddingVertical: 12,
+  paddingHorizontal: 8,
+  borderBottomWidth: 1,
+  borderBottomColor: Colors.goldPrimary + '40',
+  marginTop: 4,
+},
   modalTitle: {
     color: Colors.goldPrimary,
     fontSize: rf(18),

@@ -1,5 +1,3 @@
-// src/components/RenderRegister.tsx
-
 import AuthContainer from "@/components/ui/AuthContainer";
 import { useAuth } from "@/context/AuthContext";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -18,39 +16,26 @@ const RenderRegister = () => {
         nome: '',
         email: '',
         cpf: '',
-        telefone: '',
-        senha: '',
-        confirmSenha: ''
+        phone: '',
+        password: '',
+        confirmPassword: ''
     });
     
-    const [showSenha, setShowSenha] = useState(false);
-    const [showConfirmSenha, setShowConfirmSenha] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleChange = (field: string, value: string) => {
         setFormData({...formData, [field]: value});
     };
 
-    // Função para validar os campos
     const validateForm = () => {
-        if (!formData.nome || !formData.email || !formData.cpf || !formData.telefone || !formData.senha || !formData.confirmSenha) {
+        if (!formData.nome || !formData.email || !formData.cpf || !formData.phone || !formData.password || !formData.confirmPassword) {
             Alert.alert("Erro", "Todos os campos são obrigatórios");
             return false;
         }
         
-        if (formData.senha !== formData.confirmSenha) {
+        if (formData.password !== formData.confirmPassword) {
             Alert.alert("Erro", "As senhas não coincidem");
-            return false;
-        }
-        
-        if (formData.senha.length < 6) {
-            Alert.alert("Erro", "A senha deve ter pelo menos 6 caracteres");
-            return false;
-        }
-        
-        // Validação básica de email
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(formData.email)) {
-            Alert.alert("Erro", "E-mail inválido");
             return false;
         }
         
@@ -63,59 +48,35 @@ const RenderRegister = () => {
         setLoading(true);
         
         try {
-            console.log('Iniciando registro com dados:', {
+            await register({
                 nome: formData.nome,
                 email: formData.email,
                 cpf: formData.cpf,
-                telefone: formData.telefone,
+                phone: formData.phone,
+                password: formData.password
             });
-            
-            const token = await register({
-                nome: formData.nome,
-                email: formData.email,
-                cpf: formData.cpf,
-                telefone: formData.telefone,
-                senha: formData.senha
-            });
-            
-            console.log('Registro realizado com sucesso!');
             
             Alert.alert(
                 "Sucesso", 
                 "Cadastro realizado com sucesso!",
-                [
-                    { 
-                        text: "OK", 
-                        onPress: () => router.push("/(auth)")
-                    }
-                ]
+                [{ text: "OK", onPress: () => router.push("/(auth)") }]
             );
             
         } catch (error) {
-            console.error('Erro no registro:', error);
-            
-            Alert.alert(
-                "Erro no Cadastro", 
-                error instanceof Error ? error.message : "Erro ao conectar com o servidor"
-            );
+            Alert.alert("Erro", error instanceof Error ? error.message : "Erro ao cadastrar");
         } finally {
             setLoading(false);
         }
     };
 
-    return (
-        <AuthContainer
-            title="Bem-Vindo"
-            subtitle="Faça seu cadastro"
-            icon="hotel"
-        >
+    return(
+        <AuthContainer title="Bem-Vindo" subtitle="Faça seu cadastro" icon="hotel">
             <View style={style.leftArrow}> 
                 <TouchableOpacity onPress={() => router.push("/(auth)")}> 
                     <MaterialCommunityIcons name="arrow-left" size={25} color="#000000ff" />
                 </TouchableOpacity>
             </View> 
     
-            {/* Campo Nome Completo */}
             <View style={style.inputContainer}>
                 <Text style={style.inputLabel}>Nome Completo</Text>
                 <View style={style.inputWrapper}>
@@ -131,7 +92,6 @@ const RenderRegister = () => {
                 </View>
             </View>
 
-            {/* Campo E-mail */}
             <View style={style.inputContainer}>
                 <Text style={style.inputLabel}>E-mail</Text>
                 <View style={style.inputWrapper}>
@@ -149,7 +109,6 @@ const RenderRegister = () => {
                 </View>
             </View>
 
-            {/* Campo CPF com máscara */}
             <View style={style.inputContainer}>
                 <Text style={style.inputLabel}>CPF</Text>
                 <View style={style.inputWrapper}>
@@ -167,20 +126,15 @@ const RenderRegister = () => {
                 </View>
             </View>
 
-            {/* Campo Telefone com máscara */}
             <View style={style.inputContainer}>
                 <Text style={style.inputLabel}>Telefone</Text>
                 <View style={style.inputWrapper}>
                     <MaterialCommunityIcons name="phone" size={20} style={style.inputIcon} />
                     <TextInputMask
                         type={'cel-phone'}
-                        options={{
-                            maskType: 'BRL',
-                            withDDD: true,
-                            dddMask: '(99) '
-                        }}
-                        value={formData.telefone}
-                        onChangeText={(text) => handleChange('telefone', text)}
+                        options={{ maskType: 'BRL', withDDD: true, dddMask: '(99) ' }}
+                        value={formData.phone}
+                        onChangeText={(text) => handleChange('phone', text)}
                         placeholder="(00) 00000-0000"
                         keyboardType="phone-pad"
                         style={style.inputField}
@@ -190,51 +144,40 @@ const RenderRegister = () => {
                 </View>
             </View>
 
-            {/* Campo Senha */}
             <View style={style.inputContainer}>
                 <Text style={style.inputLabel}>Senha</Text>
                 <View style={style.inputWrapper}>
                     <MaterialCommunityIcons name="key" size={20} style={style.inputIcon} />
                     <TextInput
-                        value={formData.senha}
-                        onChangeText={(text) => handleChange('senha', text)}
+                        value={formData.password}
+                        onChangeText={(text) => handleChange('password', text)}
                         placeholder="***********"
-                        secureTextEntry={!showSenha}
+                        secureTextEntry={!showPassword}
                         style={style.inputField}
                         placeholderTextColor={style.placeholderColor.color}
                         editable={!loading && !authLoading}
                     />
-                    
-                    <TouchableOpacity onPress={() => setShowSenha(!showSenha)}>
-                        <MaterialCommunityIcons 
-                            name={showSenha ? "eye-off" : "eye"} 
-                            size={20} 
-                            style={style.eyeIcon} 
-                        />
+                    <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                        <MaterialCommunityIcons name={showPassword ? "eye-off" : "eye"} size={20} style={style.eyeIcon} />
                     </TouchableOpacity>
                 </View>
             </View>
 
-            {/* Campo Confirmar Senha */}
             <View style={style.inputContainer}>
                 <Text style={style.inputLabel}>Confirmar Senha</Text>
                 <View style={style.inputWrapper}>
                     <MaterialCommunityIcons name="key" size={20} style={style.inputIcon} />
                     <TextInput
-                        value={formData.confirmSenha}
-                        onChangeText={(text) => handleChange('confirmSenha', text)}
+                        value={formData.confirmPassword}
+                        onChangeText={(text) => handleChange('confirmPassword', text)}
                         placeholder="***********"
-                        secureTextEntry={!showConfirmSenha}
+                        secureTextEntry={!showConfirmPassword}
                         style={style.inputField}
                         placeholderTextColor={style.placeholderColor.color}
                         editable={!loading && !authLoading}
                     />
-                    <TouchableOpacity onPress={() => setShowConfirmSenha(!showConfirmSenha)}>
-                        <MaterialCommunityIcons 
-                            name={showConfirmSenha ? "eye-off" : "eye"} 
-                            size={20} 
-                            style={style.eyeIcon} 
-                        />
+                    <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+                        <MaterialCommunityIcons name={showConfirmPassword ? "eye-off" : "eye"} size={20} style={style.eyeIcon} />
                     </TouchableOpacity>
                 </View>
             </View>

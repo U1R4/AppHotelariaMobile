@@ -1,11 +1,14 @@
 import AuthProvider from "@/context/AuthContext";
+import { ReserveProvider } from "@/context/ReserveContext";
 import { Stack } from "expo-router";
 import React from "react";
 
 const RootLayout = () => {
   return (
     <AuthProvider>
-      <Stack screenOptions={{ headerShown: false }} />
+      <ReserveProvider>
+        <Stack screenOptions={{ headerShown: false }} />
+      </ReserveProvider>
     </AuthProvider>
   );
 };

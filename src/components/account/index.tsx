@@ -1,65 +1,88 @@
 import { useAuth } from '@/context/AuthContext';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import React, { useEffect, useState } from 'react';
 import {
+  ActivityIndicator,
+  Alert,
   Dimensions,
-  Modal,
   ScrollView,
   Text,
-  TextInput,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
-import { TextInputMask } from 'react-native-masked-text';
 import AuthContainer from '../ui/AuthContainer';
-import TextField from '../ui/TextField';
 import { Colors, styles } from './styles';
 
 const { width } = Dimensions.get('window');
 const responsiveFont = (size: number) => size * (width / 375);
 const iconSize = responsiveFont(18);
 
+interface DecodedToken {
+  id: number;
+  nome: string;
+  email: string;
+  telefone: string;
+  cpf: string;
+  iat: number;
+  exp: number;
+}
+
 const MyAccount = () => {
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [focusedField, setFocusedField] = useState<string | null>(null);
-
+  const { token, signOut } = useAuth();
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState({
-    name: 'alacazan',
-    email: 'a@a.a',
-    phone: '(12) 12345-1234',
-    cpf: '123.123.123-12',
+    nome: '',
+    email: '',
+    telefone: '',
+    cpf: '',
   });
 
-  const [passwordData, setPasswordData] = useState({
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: '',
-  });
+  useEffect(() => {
+    if (token) {
+      try {
+        const decoded = jwtDecode<DecodedToken>(token);
+        setUserData({
+          nome: decoded.nome || '',
+          email: decoded.email || '',
+          telefone: decoded.telefone || '',
+          cpf: decoded.cpf || '',
+        });
+      } catch (error) {
+        Alert.alert('Erro', 'Falha ao decodificar token');
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setLoading(false);
+    }
+  }, [token]);
 
-  const handleSaveChanges = () => {
-    alert('Alterações salvas com sucesso!');
+  const handleLogout = async () => {
+    signOut();
+    router.replace("/(auth)");
   };
 
-    const { signOut } = useAuth();
-    const router = useRouter();
-    const handleLogout = async () => {
-      signOut();
-      router.replace("/(auth)");
+  const formatPhone = (phone: string) => {
+    if (!phone) return '';
+    const cleaned = phone.replace(/\D/g, '');
+    const match = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/);
+    if (match) {
+      return `(${match[1]}) ${match[2]}-${match[3]}`;
     }
-  
+    return phone;
+  };
 
-  const handlePasswordChange = () => {
-    setShowPasswordModal(false);
-    setPasswordData({
-      currentPassword: '',
-      newPassword: '',
-      confirmPassword: '',
-    });
-    alert('Senha alterada com sucesso!');
+  const formatCPF = (cpf: string) => {
+    if (!cpf) return '';
+    const cleaned = cpf.replace(/\D/g, '');
+    const match = cleaned.match(/^(\d{3})(\d{3})(\d{3})(\d{2})$/);
+    if (match) {
+      return `${match[1]}.${match[2]}.${match[3]}-${match[4]}`;
+    }
+    return cpf;
   };
 
   const CustomButton = ({ title, onPress, variant = 'primary' }: any) => (
@@ -79,17 +102,21 @@ const MyAccount = () => {
       >
         {title}
       </Text>
-
-      {variant === 'secondary' && (
-        <FontAwesome5
-          name="crown"
-          size={responsiveFont(14)}
-          color={Colors.goldPrimary}
-          style={{ marginLeft: responsiveFont(4), opacity: 0.7 }}
-        />
-      )}
     </TouchableOpacity>
   );
+
+  if (loading) {
+    return (
+      <AuthContainer title="Minha Conta" icon="user">
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <ActivityIndicator size="large" color={Colors.goldPrimary} />
+          <Text style={{ color: Colors.textSecondary, marginTop: 10 }}>
+            Carregando seus dados...
+          </Text>
+        </View>
+      </AuthContainer>
+    );
+  }
 
   return (
     <AuthContainer title="Minha Conta" icon="user">
@@ -105,16 +132,7 @@ const MyAccount = () => {
             NOME
           </Text>
 
-          <TextField
-            value={userData.name}
-            onChangeText={(text) => setUserData({ ...userData, name: text })}
-            placeholder="Digite seu nome completo"
-            style={[
-              styles.textFieldInput,
-              focusedField === 'name' && styles.textFieldInputFocused,
-            ]}
-            onFocus={() => setFocusedField('name')}
-            onBlur={() => setFocusedField(null)} label={''}          />
+          <Text style={styles.userDataText}>{userData.nome || 'Não informado'}</Text>
         </View>
 
         {/* EMAIL */}
@@ -128,17 +146,7 @@ const MyAccount = () => {
             E-MAIL
           </Text>
 
-          <TextField
-            value={userData.email}
-            onChangeText={(text) => setUserData({ ...userData, email: text })}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            style={[
-              styles.textFieldInput,
-              focusedField === 'email' && styles.textFieldInputFocused,
-            ]}
-            onFocus={() => setFocusedField('email')}
-            onBlur={() => setFocusedField(null)} label={''}          />
+          <Text style={styles.userDataText}>{userData.email || 'Não informado'}</Text>
         </View>
 
         {/* TELEFONE */}
@@ -152,18 +160,7 @@ const MyAccount = () => {
             TELEFONE
           </Text>
 
-          <TextInputMask
-            type="cel-phone"
-            options={{ withDDD: true, dddMask: '(99) ' }}
-            value={userData.phone}
-            onChangeText={(text) => setUserData({ ...userData, phone: text })}
-            style={[
-              styles.maskedInput,
-              focusedField === 'phone' && styles.maskedInputFocused,
-            ]}
-            onFocus={() => setFocusedField('phone')}
-            onBlur={() => setFocusedField(null)}
-          />
+          <Text style={styles.userDataText}>{formatPhone(userData.telefone) || 'Não informado'}</Text>
         </View>
 
         {/* CPF */}
@@ -177,92 +174,13 @@ const MyAccount = () => {
             CPF
           </Text>
 
-          <TextInputMask
-            type="cpf"
-            value={userData.cpf}
-            editable={false}
-            style={[styles.maskedInput, styles.disabledInput]}
-          />
+          <Text style={styles.userDataText}>{formatCPF(userData.cpf) || 'Não informado'}</Text>
         </View>
 
-        {/* SENHA */}
-        <View style={[styles.fieldContainer, styles.fieldContainerGold]}>
-          <Text style={styles.fieldLabel}>
-            <MaterialCommunityIcons
-              name="lock-outline"
-              size={iconSize}
-              color={Colors.goldPrimary}
-            />{' '}
-            SENHA
-          </Text>
-
-          <View style={styles.passwordRow}>
-            <Text style={styles.passwordDots}>•••••••••</Text>
-
-            <TouchableOpacity onPress={() => setShowPasswordModal(true)}>
-              <Text style={styles.changePasswordText}>
-                <MaterialCommunityIcons
-                  name="key-change"
-                  size={responsiveFont(16)}
-                  color={Colors.goldPrimary}
-                />{' '}
-                ALTERAR SENHA
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <View style={styles.actionsContainer}>
-          <CustomButton title="Salvar Alterações" onPress={handleSaveChanges} />
-        </View>
         <View style={styles.actionsContainer}>
           <CustomButton title="Logout" onPress={handleLogout} />
         </View>
       </ScrollView>
-
-      {/* MODAL */}
-      <Modal visible={showPasswordModal} transparent animationType="fade">
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalHeader}>
-              <MaterialCommunityIcons
-                name="shield-lock-outline"
-                size={responsiveFont(32)}
-                color={Colors.goldPrimary}
-              />
-              <Text style={styles.modalTitle}>Alterar Senha</Text>
-              <Text style={styles.modalSubtitle}>
-                Atualize suas credenciais de segurança
-              </Text>
-            </View>
-
-            <View style={styles.modalBody}>
-              {['currentPassword', 'newPassword', 'confirmPassword'].map((field, index) => (
-                <TextInput
-                  key={field}
-                  placeholder="Digite sua senha"
-                  secureTextEntry
-                  style={styles.modalInput}
-                  value={(passwordData as any)[field]}
-                  onChangeText={(text) =>
-                    setPasswordData({ ...passwordData, [field]: text })
-                  }
-                />
-              ))}
-            </View>
-
-            <View style={styles.modalFooter}>
-              <CustomButton title="Confirmar Alteração" onPress={handlePasswordChange} />
-              <CustomButton
-                title="Cancelar"
-                variant="secondary"
-                onPress={() => setShowPasswordModal(false)}
-              />
-            </View>
-
-          </View>
-        </View>
-      </Modal>
     </AuthContainer>
   );
 };

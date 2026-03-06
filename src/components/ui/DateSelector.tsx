@@ -7,6 +7,7 @@ type Props = {
     onSelectDate: (date: string) => void;
     onClose?: () => void;
     title?: string;
+    minDate?: string;
 }
 
 const DateSelector = ({ onSelectDate, onClose, title = "Selecione a data" }: Props) => {

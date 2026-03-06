@@ -1,3 +1,4 @@
+// context/AuthContext.tsx
 import { API_URL } from "@/constants/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
@@ -14,9 +15,10 @@ type RegisterData = {
   nome: string;
   email: string;
   cpf: string;
-  telefone: string;
-  senha: string;
+  phone: string;
+  password: string;
 };
+
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -27,112 +29,106 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     (async () => {
       try {
         const stored = await AsyncStorage.getItem("token");
-        if (stored) setToken(stored);
+        if (stored) {
+          const cleanToken = stored.trim();
+          setToken(cleanToken);
+        }
       } finally {
         setIsLoading(false);
       }
     })();
   }, []);
 
-  // LOGIN
   async function signIn(email: string, senha: string) {
-
     try {
       const res = await fetch(`${API_URL}/login`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, senha }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim(), senha: senha.trim() }),
       });
+      
+      const responseText = await res.text();
       
       if (!res.ok) {
-        const err = await res.json().catch(() => null);
-        throw new Error(err?.erro || "Credenciais inválidas");
-      }
-
-      const tokenAPI: string = await res.json();
-      await AsyncStorage.setItem("token", tokenAPI);
-      setToken(tokenAPI);
-
-      
-    } catch (error) {
-      console.error("Erro na requisição:", error);
-      throw error;
-    }
-  }
-
-  // REGISTER
-  async function register(userData: RegisterData) {
-    try {
-      const cpfLimpo = userData.cpf.replace(/\D/g, '');
-      const telefoneLimpo = userData.telefone.replace(/\D/g, '');
-      
-      const dadosParaEnviar = { 
-        nome: userData.nome,
-        email: userData.email,
-        cpf: cpfLimpo,
-        telefone: telefoneLimpo,
-        senha: userData.senha
-      };
-      
-      const url = `${API_URL}/login/logon`;
-      
-      console.log('Enviando para registro:', {
-        url,
-        dados: {
-          nome: dadosParaEnviar.nome,
-          email: dadosParaEnviar.email,
-          cpf: dadosParaEnviar.cpf,
-          telefone: dadosParaEnviar.telefone
-        }
-      });
-      
-      const res = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dadosParaEnviar),
-      });
-      
-      console.log('Status da resposta:', res.status);
-      
-      if (!res.ok) {
-        let errorMessage = "Erro ao realizar cadastro";
-        
+        let errorMessage = "Dados invalidos";
         try {
-          const errorData = await res.json();
-          console.log('Erro detalhado:', errorData);
-          errorMessage = errorData?.erro || errorData?.message || errorMessage;
-        } catch {
-          try {
-            const errorText = await res.text();
-            console.log('Erro texto:', errorText);
-            errorMessage = errorText || errorMessage;
-          } catch (e) {
-            console.log('Não foi possível ler o erro');
-          }
-        }
-        
+          const errorData = JSON.parse(responseText);
+          errorMessage = errorData?.erro || errorMessage;
+        } catch {}
         throw new Error(errorMessage);
       }
 
-      const tokenAPI: string = await res.json();
-      console.log('Token recebido:', tokenAPI ? 'Sim' : 'Não');
+      let cleanToken = responseText.trim();
       
-      await AsyncStorage.setItem("token", tokenAPI);
-      setToken(tokenAPI);
+      if (cleanToken.startsWith('"') && cleanToken.endsWith('"')) {
+        cleanToken = cleanToken.slice(1, -1);
+      }
       
-      return tokenAPI;
+      try {
+        const parsed = JSON.parse(cleanToken);
+        if (typeof parsed === 'string') {
+          cleanToken = parsed;
+        }
+      } catch {}
+      
+      await AsyncStorage.setItem("token", cleanToken);
+      setToken(cleanToken);
       
     } catch (error) {
-      console.error('Erro completo na requisição:', error);
       throw error;
     }
   }
 
-  // LOGOUT
+  async function register(userData: RegisterData) {
+    try {
+      const cpfLimpo = userData.cpf.replace(/\D/g, '');
+      const telefoneLimpo = userData.phone.replace(/\D/g, '');
+      
+      const res = await fetch(`${API_URL}/login/logon`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          nome: userData.nome,
+          email: userData.email,
+          cpf: cpfLimpo,
+          telefone: telefoneLimpo,
+          senha: userData.password 
+        }),
+      });
+      
+      const responseText = await res.text();
+      
+      if (!res.ok) {
+        let errorMessage = "Erro ao realizar cadastro";
+        try {
+          const errorData = JSON.parse(responseText);
+          errorMessage = errorData?.erro || errorMessage;
+        } catch {}
+        throw new Error(errorMessage);
+      }
+      
+      let cleanToken = responseText.trim();
+      
+      if (cleanToken.startsWith('"') && cleanToken.endsWith('"')) {
+        cleanToken = cleanToken.slice(1, -1);
+      }
+      
+      try {
+        const parsed = JSON.parse(cleanToken);
+        if (typeof parsed === 'string') {
+          cleanToken = parsed;
+        }
+      } catch {}
+      
+      await AsyncStorage.setItem("token", cleanToken);
+      setToken(cleanToken);
+      return cleanToken;
+      
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async function signOut() {
     await AsyncStorage.removeItem("token");
     setToken(null);

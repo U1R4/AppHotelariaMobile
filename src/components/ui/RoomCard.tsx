@@ -1,170 +1,128 @@
-import { FontAwesome5, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
-import React, { useState } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
-import BottomSheet from "./BottomSheet";
-import { Colors, global } from "./style";
+import { FontAwesome5 } from '@expo/vector-icons';
+import React from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { Colors } from './style';
 
-type NameIcon =
-  | { lib: "MaterialIcons"; name: keyof typeof MaterialIcons.glyphMap }
-  | { lib: "FontAwesome6"; name: keyof typeof FontAwesome6.glyphMap }
-  | { lib: "FontAwesome5"; name: keyof typeof FontAwesome5.glyphMap };
-
-type Infos = { title?: string; text: string; price: number };
-
-type Props = {
-  label?: string;
-  description?: Infos;
-  icon?: NameIcon;
-  containerStyle?: any;
+type Room = {
+  nome: string;
+  capacidadeTotal: number | null;
+  preco: number;
+  img: string[];
 };
 
-const RoomCard = ({ label, description, icon, containerStyle }: Props) => {
-  const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
+type Props = {
+  room: Room;
+  onReserve: (preco: number) => void;
+  containerStyle?: object;
+  nights?: number;
+};
 
-  const handleReserve = () => {
-    setBottomSheetVisible(true);
-  };
+const RoomCard = ({
+  room,
+  onReserve,
+  containerStyle,
+  nights = 1,
+}: Props) => {
+  
+  const totalPrice = room.preco * nights;
 
-  const handleCloseBottomSheet = () => {
-    setBottomSheetVisible(false);
+  const formatPrice = (price: number) => {
+    return price.toFixed(2).replace('.', ',');
   };
 
   return (
-    <View style={[global.cardContainer, containerStyle]}>
-      {/* Conteúdo do Card */}
-      <TouchableOpacity style={global.touchableFixed}>
-        <Image
-          source={require('../../../assets/images/casalCinzaLuxo.jpg')}
-          style={global.imageFixed}
-          resizeMode="cover"
-        />
-        <View style={global.cardContentFixed}>
-          <View style={global.roomCardHeaderRow}>
-            {!!label && (
-              <Text style={[global.label, {flex: 1, marginRight: 8}]} numberOfLines={1}>
-                {label}
-              </Text>
-            )}
-            
-            <View style={global.iconContainer}>
-              {!!icon && (
-                <>
-                  {icon.lib === "MaterialIcons" && (
-                    <MaterialIcons name={icon.name} size={18} color={Colors.goldPrimary} />
-                  )}
-                  {icon.lib === "FontAwesome5" && (
-                    <FontAwesome5 name={icon.name} size={18} color={Colors.goldPrimary} />
-                  )}
-                  {icon.lib === "FontAwesome6" && (
-                    <FontAwesome6 name={icon.name} size={18} color={Colors.goldPrimary} />
-                  )}
-                </>
-              )}
-            </View>
-          </View>
+    <TouchableOpacity 
+      style={[{
+        backgroundColor: Colors.darkSecondary,
+        borderWidth: 1,
+        borderColor: Colors.goldPrimary,
+        borderRadius: 12,
+        padding: 16,
+        marginBottom: 16,
+      }, containerStyle]}
+      onPress={() => onReserve( room.preco)}
+      activeOpacity={0.7}
+    >
+      <View style={{ 
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        marginBottom: 12 
+      }}>
+        <Text style={{ 
+          color: Colors.goldPrimary, 
+          fontSize: 20, 
+          fontWeight: 'bold' 
+        }}>
+          {room.nome}
+        </Text>
+        <FontAwesome5 name="bed" size={24} color={Colors.goldPrimary} />
+      </View>
 
-          {!!description && (
-            <View style={global.descriptionContainerFixed}>
-              <View style={{ flex: 1 }}>
-                {!!description.title && (
-                  <Text style={global.titleCard} numberOfLines={1}>
-                    {description.title}
-                  </Text>
-                )}
-                <Text 
-                  style={[global.textFixed, global.roomCardDescriptionText]} 
-                  numberOfLines={2}
-                >
-                  {description.text}
-                </Text>
-              </View>
-              <View style={global.priceContainer}>
-                <Text style={global.price}>R$ {description.price.toFixed(2)}</Text>
-              </View>
-            </View>
-          )}
+      <View style={{ 
+        flexDirection: 'row', 
+        alignItems: 'center',
+        marginBottom: 8 
+      }}>
+        <FontAwesome5 name="users" size={16} color={Colors.goldPrimary} />
+        <Text style={{ 
+          color: Colors.textPrimary, 
+          marginLeft: 8,
+          fontSize: 14 
+        }}>
+          {room.capacidadeTotal ? `${room.capacidadeTotal} hóspedes` : 'Capacidade não informada'}
+        </Text>
+      </View>
+
+      <View style={{ 
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        marginTop: 8,
+        marginBottom: 16 
+      }}>
+        <Text style={{ 
+          color: Colors.textSecondary, 
+          fontSize: 14 
+        }}>
+          R$ {formatPrice(room.preco)}/noite
+        </Text>
+        
+        <View style={{ alignItems: 'flex-end' }}>
+          <Text style={{ 
+            color: Colors.goldPrimary, 
+            fontSize: 18, 
+            fontWeight: 'bold' 
+          }}>
+            R$ {formatPrice(totalPrice)}
+          </Text>
+          <Text style={{ 
+            color: Colors.textSecondary, 
+            fontSize: 12 
+          }}>
+            Total para {nights} {nights === 1 ? 'noite' : 'noites'}
+          </Text>
         </View>
-      </TouchableOpacity>
-      
+      </View>
+
       <TouchableOpacity 
-        style={global.roomCardReserveButton}
-        onPress={handleReserve}
-        activeOpacity={0.8}
+        style={{
+          backgroundColor: Colors.goldPrimary,
+          paddingVertical: 12,
+          borderRadius: 8,
+          alignItems: 'center',
+        }}
+        onPress={() => onReserve(room.preco)}
       >
-        <Text style={global.roomCardReserveButtonText}>Reservar</Text>
-            <BottomSheet
-        visible={bottomSheetVisible}
-        onClose={handleCloseBottomSheet}
-      >
-        <View style={global.bottomSheetReserveContent}>
-          <Text style={global.bottomSheetReserveTitle}>Reservar Quarto</Text>
-          
-          <View style={global.bottomSheetReserveCard}>
-            <View style={global.bottomSheetReserveCardHeader}>
-              {label && (
-                <Text style={global.bottomSheetReserveRoomLabel}>Quarto: {label}</Text>
-              )}
-            </View>
-            
-            {description && (
-              <View style={global.bottomSheetReserveCardBody}>
-                {description.title && (
-                  <Text style={global.bottomSheetReserveRoomTitle}>{description.title}</Text>
-                )}
-                <Text style={global.bottomSheetReserveRoomDescription}>{description.text}</Text>
-                <View style={global.bottomSheetReservePriceContainer}>
-                  <Text style={global.bottomSheetReservePriceLabel}>Valor por noite</Text>
-                  <Text style={global.bottomSheetReservePrice}>R$ {description.price.toFixed(2)}</Text>
-                </View>
-              </View>
-            )}
-          </View>
-
-          <View style={global.bottomSheetReserveDivider} />
-          
-          <View style={{ marginVertical: 20 }}>
-            <Text style={{ 
-              fontSize: 16, 
-              fontWeight: '600', 
-              color: Colors.darkPrimary,
-              marginBottom: 10 
-            }}>
-              Detalhes da Reserva
-            </Text>
-            
-            <Text style={{ 
-              fontSize: 14, 
-              color: Colors.grayDark, 
-              marginBottom: 20 
-            }}>
-              Preencha as informações para concluir sua reserva.
-            </Text>
-          </View>
-          
-          <View style={global.bottomSheetReserveActions}>
-            <TouchableOpacity 
-              style={global.bottomSheetReserveCancelButton}
-              onPress={handleCloseBottomSheet}
-              activeOpacity={0.8}
-            >
-              <Text style={global.bottomSheetReserveCancelButtonText}>Cancelar</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity 
-              style={global.bottomSheetReserveConfirmButton}
-              onPress={() => {
-                console.log(`Reserva confirmada para o quarto: ${label}`);
-                handleCloseBottomSheet();
-              }}
-              activeOpacity={0.8}
-            >
-              <Text style={global.bottomSheetReserveConfirmButtonText}>Confirmar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </BottomSheet>
+        <Text style={{ 
+          color: Colors.darkSecondary, 
+          fontSize: 16, 
+          fontWeight: 'bold' 
+        }}>
+          Reservar Agora
+        </Text>
       </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   );
 };
 

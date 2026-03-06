@@ -13,7 +13,7 @@ function isValidEmail(email: string) {
 }
 
 const RenderLogin = () => {
-    const{ signIn } = useAuth();
+    const { signIn } = useAuth();
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [loading, setLoading] = useState(false);
@@ -29,17 +29,16 @@ const RenderLogin = () => {
 
     const canSubmit = email && senha && Object.keys(errors).length === 0 && !loading;
     
-     const handleSubmit = async () => {
-    try {
-        setLoading(true);
-        console.log("Tentando logar com:", { email, senha });
-        await signIn(email.trim(), senha);
-        Alert.alert("Login bem-sucedido!");
-        router.replace("/(tabs)/explorer");
-    } catch (erro: any) {
-        Alert.alert("Erro", erro?.message || "Falha ao tentar logar!");
-    } finally {
-        setLoading(false);
+    const handleSubmit = async () => {
+        try {
+            setLoading(true);
+            await signIn(email, senha);
+            Alert.alert("Login bem-sucedido!");
+            router.replace("/(tabs)/explorer");
+        } catch (erro: any) {
+            Alert.alert("Erro", erro?.message || "Falha ao tentar logar!");
+        } finally {
+            setLoading(false);
         }
     };
 
